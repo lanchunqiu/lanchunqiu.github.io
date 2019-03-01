@@ -4,8 +4,14 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, lanchunqiu.github.io">
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex">
+    <meta name="keywords" content="如何将一个单链表逆置？, lanchunqiu.github.io">
+    <meta name="description" content="如何将一个单链表逆置？
+链表的节点
+public class ListNode {
+    public int value;
+    public ListNode next;
+
+    public ListNode(int value">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +19,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Hello World | lanchunqiu.github.io</title>
+    <title>如何将一个单链表逆置？ | lanchunqiu.github.io</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -257,13 +263,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        Hello World
+                        如何将一个单链表逆置？
                     </div>
                 </div>
             </div>
@@ -382,19 +388,99 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span>
+                <h2 id="如何将一个单链表逆置？"><a href="#如何将一个单链表逆置？" class="headerlink" title="如何将一个单链表逆置？"></a>如何将一个单链表逆置？</h2><p><img src="/Users/lancq/Library/Application Support/typora-user-images/image-20190302002632947.png" alt="image-20190302002632947"></p>
+<p>链表的节点</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ListNode</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> value<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> ListNode next<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">ListNode</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>next <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> value <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server
+<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><ul>
+<li><strong>普通解法</strong></li>
+</ul>
+<p>链表的逆置最容易想到是利用一个栈的结构，该算法的时间复杂度为o(n)，空间复杂度同样为o(n)。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ListNode <span class="token function">reverseListByStack</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>head <span class="token operator">==</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    Stack<span class="token operator">&lt;</span>Integer<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">while</span><span class="token punctuation">(</span>head <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>head<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        head <span class="token operator">=</span> head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    ListNode newHead <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode p <span class="token operator">=</span> newHead<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 取出栈中的元素，构造新链表</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        ListNode node <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span>next <span class="token operator">=</span> node<span class="token punctuation">;</span>
+        p <span class="token operator">=</span> node<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> newHead<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ListNode node1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode node2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode node3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode node4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    node1<span class="token punctuation">.</span>next <span class="token operator">=</span> node2<span class="token punctuation">;</span>
+    node2<span class="token punctuation">.</span>next <span class="token operator">=</span> node3<span class="token punctuation">;</span>
+    node3<span class="token punctuation">.</span>next <span class="token operator">=</span> node4<span class="token punctuation">;</span>
+
+    node1 <span class="token operator">=</span> <span class="token function">reverseListByStack</span><span class="token punctuation">(</span>node1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">while</span><span class="token punctuation">(</span>node1 <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>node1<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        node1 <span class="token operator">=</span> node1<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate
+<ul>
+<li><strong>高级解法</strong> </li>
+</ul>
+<p>只额外使用了两个只针，这种解法的空间复杂度能达到o(1)，时间复杂度同样为o(n)。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ListNode <span class="token function">reverseList</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ListNode pre <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    ListNode next <span class="token operator">=</span> null<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>head <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        next <span class="token operator">=</span> head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        head<span class="token punctuation">.</span>next <span class="token operator">=</span> pre<span class="token punctuation">;</span>
+        pre <span class="token operator">=</span> head<span class="token punctuation">;</span>
+        head <span class="token operator">=</span> next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> pre<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ListNode node1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode node2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode node3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ListNode node4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    node1<span class="token punctuation">.</span>next <span class="token operator">=</span> node2<span class="token punctuation">;</span>
+    node2<span class="token punctuation">.</span>next <span class="token operator">=</span> node3<span class="token punctuation">;</span>
+    node3<span class="token punctuation">.</span>next <span class="token operator">=</span> node4<span class="token punctuation">;</span>
+
+    node1 <span class="token operator">=</span> <span class="token function">reverse</span><span class="token punctuation">(</span>node1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">while</span><span class="token punctuation">(</span>node1 <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>node1<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        node1 <span class="token operator">=</span> node1<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy
-</code></pre>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>具体步骤，如下图：</p>
+<p><img src="/Users/lancq/Library/Application Support/typora-user-images/image-20190302003014433.png" alt="image-20190302003014433"></p>
 
             </div>
             <hr>
@@ -542,7 +628,7 @@
                     </span>
                     <a href="https://lanchunqiu.github.io" class="b-link-green">lanchunqiu.github.io</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/02/28/hello-world/" class="b-link-green">Hello World</a>
+                    <a href="/2019/02/28/ListReverseDemo/" class="b-link-green">如何将一个单链表逆置？</a>
                 </p>
             </div>
         </div>
@@ -565,7 +651,8 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2019/02/28/ListReverseDemo/">
                     <div class="card-image">
@@ -585,9 +672,9 @@ public class ListNode {
 
     public ListNode(int value</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-02-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-02-28
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-user fa-fw"></i>
@@ -596,6 +683,7 @@ public class ListNode {
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -603,7 +691,7 @@ public class ListNode {
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="fa fa-dot-circle-o"></i>
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2019/02/28/hello-world/">
@@ -629,7 +717,6 @@ public class ListNode {
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
