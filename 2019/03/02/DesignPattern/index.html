@@ -4,14 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="如何将一个单链表逆置？, lanchunqiu.github.io">
-    <meta name="description" content="如何将一个单链表逆置？
-链表的节点
-public class ListNode {
-    public int value;
-    public ListNode next;
-
-    public ListNode(int value">
+    <meta name="keywords" content="设计模式, lanchunqiu.github.io">
+    <meta name="description" content="电商、社交网络、移动互联网……这一个个名称称为近几年来互联网发展的代名词，而在背后推动者中高数发展的就是技术。敏捷开发是互联网企业进行产品开发时常用的一种模式，一个产品从制定需求到上线甚至在一周之内就要王朝，毕竟快竞争对手一步才能抓住更多的">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +13,7 @@ public class ListNode {
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>如何将一个单链表逆置？ | lanchunqiu.github.io</title>
+    <title>设计模式 | lanchunqiu.github.io</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -263,13 +257,13 @@ public class ListNode {
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        如何将一个单链表逆置？
+                        设计模式
                     </div>
                 </div>
             </div>
@@ -365,12 +359,8 @@ public class ListNode {
                                 <span class="chip bg-color">Java</span>
                             </a>
                         
-                            <a href="/tags/算法/" target="_blank">
-                                <span class="chip bg-color">算法</span>
-                            </a>
-                        
-                            <a href="/tags/数据结构/" target="_blank">
-                                <span class="chip bg-color">数据结构</span>
+                            <a href="/tags/设计模式/" target="_blank">
+                                <span class="chip bg-color">设计模式</span>
                             </a>
                         
                     </div>
@@ -381,8 +371,8 @@ public class ListNode {
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/算法/" class="post-category" target="_blank">
-                                算法
+                            <a href="/categories/设计模式/" class="post-category" target="_blank">
+                                设计模式
                             </a>
                         
                     </div>
@@ -393,7 +383,7 @@ public class ListNode {
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-02-28
+                    2019-03-02
                 </div>
 
                 
@@ -409,93 +399,143 @@ public class ListNode {
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="如何将一个单链表逆置？"><a href="#如何将一个单链表逆置？" class="headerlink" title="如何将一个单链表逆置？"></a>如何将一个单链表逆置？</h2><p><img src="/2019/02/28/ListReverseDemo/image-20190302002632947.png" alt></p>
-<p>链表的节点</p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ListNode</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">int</span> value<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> ListNode next<span class="token punctuation">;</span>
-
-    <span class="token keyword">public</span> <span class="token function">ListNode</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> value<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>next <span class="token operator">=</span> null<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
+                <p>电商、社交网络、移动互联网……这一个个名称称为近几年来互联网发展的代名词，而在背后推动者中高数发展的就是技术。敏捷开发是互联网企业进行产品开发时常用的一种模式，一个产品从制定需求到上线甚至在一周之内就要王朝，毕竟快竞争对手一步才能抓住更多的用户。在这种情况下，一些久经考验的架构模式被广泛的使用起来，当确定一个产品的架构方案时，”设计模式“一词被越来越多的提出来，甚至一些公司既定的框架就是某一个或几个设计模式的体现。</p>
+<p>设计模式（Design Pattern）是一套面向对象的代码设计经验的总结，是在编程领域被反复使用、被多人知晓、而且巾帼分类整理的代码设计方法。最经典的设计模式是由GOF（“四人帮”）在1995年提出的23种设计模式。设计模式有23种单不仅仅限于23种，<a href="https://en.wikipedia.org/wiki/Design_Patterns" target="_blank" rel="noopener">维基百科</a>中对软件的各种设计模式有很详细的介绍。</p>
+<h2 id="设计模式六大原则"><a href="#设计模式六大原则" class="headerlink" title="设计模式六大原则"></a>设计模式六大原则</h2><h3 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h3><p>单一职责原则也被称作接口隔离原则，其定义：对于一个类，应该只有一个引起它变化的原因。</p>
+<p>单一职责的本质是使用多个隔离的接口，比使用单个接口要好。还是一个降低类之间的耦合度的意思，从这儿我们看出，其实设计模式就是一个软件的设计思想，从大型软件架构出发，为了升级和维护方便。</p>
+<h3 id="里氏代换原则"><a href="#里氏代换原则" class="headerlink" title="里氏代换原则"></a>里氏代换原则</h3><p>里氏代换原则的定义：子类必须能够替换掉它们的父类型。</p>
+<h3 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h3><p>开闭原则的定义 ：程序的实体对象（模块、类、函数）应该可以进行扩展，但不应该可以修改。</p>
+<p>开闭原则有两个特征：</p>
+<ul>
+<li><p>对于扩展是开放的；</p>
+</li>
+<li><p>对于修改是封闭的；</p>
+</li>
+</ul>
+<h3 id="依赖倒转原则"><a href="#依赖倒转原则" class="headerlink" title="依赖倒转原则"></a>依赖倒转原则</h3><p>依赖倒转原则的定义：程序的高层模块不应该依赖于底层模块，但两者都应该依赖于抽象；抽象不应该依赖于具体细节，而细节应该依赖于抽象。通俗的讲就是面向对象应该针对接口编程，而不是针对实现编程。</p>
+<p>依赖倒转原则的本质是通过抽象（接口或抽象类）使各个类或模块的实现彼此独立，互不影响，从而实现模块间的松耦合。</p>
+<h3 id="合成复用原则"><a href="#合成复用原则" class="headerlink" title="合成复用原则"></a>合成复用原则</h3><p>合成复用原则的定义：尽量不使用继承，而尽量使用合成/聚合。</p>
+<p>合成于聚和都是类之间特殊的关联关系。聚合表示比较“弱”的拥有关系，具体体现是甲对象中可以包含乙对象，但乙对象不不是甲对象的一部分；合成则是一种比较“强”的拥有关系，体现的是严格的整体与部分之间的关系，并且整体与部分拥有相同的生命周期。比如鱼和鱼群是聚合关系，手臂和人体之间是部分与整体的合成关系。</p>
+<h3 id="迪米特法则"><a href="#迪米特法则" class="headerlink" title="迪米特法则"></a>迪米特法则</h3><p>迪米特法则也被称作最少知道原则，就是说一个对象应当尽可能少地了解其他对象——不和陌生人说话。</p>
+<p>迪米特法则的定义：如果两个类之间不必直接通信，则这两个类不应该发生直接的相互作用。如果其中的一个类需要调用另一个类的某个方法，可以通过第三者来转发这个调用。</p>
+<h2 id="23种经典设计模式"><a href="#23种经典设计模式" class="headerlink" title="23种经典设计模式"></a>23种经典设计模式</h2><h3 id="设计模式的分类"><a href="#设计模式的分类" class="headerlink" title="设计模式的分类"></a>设计模式的分类</h3><p>根据各种设计模式的特点，可以将设计模式简单分为三类：创建型模式、结构型模式、行为模式。</p>
+<ul>
+<li>创建型模式，有5种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式；</li>
+<li>结构型模式，有7种：桥接模式、适配器模式、装饰模式、组合模式、享元模式、外观模式、代理模式；</li>
+<li>行为模式，有11种：模版方法模式、策略模式、状态模式、观察者模式、备忘录模式、中介者模式、命令模式、访问者模式、责任链模式、迭代器模式、解释器模式；</li>
+</ul>
+<h3 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h3><h4 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h4><p>工厂方法模式的定义：定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法是一个类的实例化延迟到其子类。</p>
+<p>工厂方法模式由抽象工厂、具体工厂、抽象产品和具体产品等4个要素构成。本节来分析其基本结构和实现方法。</p>
+<p>工厂方法模式的主要角色如下。</p>
+<ol>
+<li>抽象工厂（Abstract Factory）：提供了创建产品的接口，调用者通过它访问具体工厂的工厂方法 newProduct() 来创建产品。</li>
+<li>具体工厂（ConcreteFactory）：主要是实现抽象工厂中的抽象方法，完成具体产品的创建。</li>
+<li>抽象产品（Product）：定义了产品的规范，描述了产品的主要特性和功能。</li>
+<li>具体产品（ConcreteProduct）：实现了抽象产品角色所定义的接口，由具体工厂来创建，它同具体工厂之间一一对应。</li>
+</ol>
+<p>结构图：</p>
+<p><img src="/2019/03/02/DesignPattern/FactoryMethodPattern.png" alt></p>
+<p>示例（电视工厂生产电视）：</p>
+<p>创建电视接口类：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">TV</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>创建电视的实现类：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HairTV</span> <span class="token keyword">implements</span> <span class="token class-name">TV</span><span class="token punctuation">{</span>
     <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> value <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"海尔电视播放..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><h4 id="普通解法"><a href="#普通解法" class="headerlink" title="普通解法"></a>普通解法</h4><p>链表的逆置最容易想到是利用一个栈的结构，该算法的时间复杂度为o(n)，空间复杂度同样为o(n)。</p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ListNode <span class="token function">reverseListByStack</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span><span class="token punctuation">(</span>head <span class="token operator">==</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    Stack<span class="token operator">&lt;</span>Integer<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">while</span><span class="token punctuation">(</span>head <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>head<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        head <span class="token operator">=</span> head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    ListNode newHead <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode p <span class="token operator">=</span> newHead<span class="token punctuation">;</span>
-    <span class="token comment" spellcheck="true">// 取出栈中的元素，构造新链表</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        ListNode node <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span>stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        p<span class="token punctuation">.</span>next <span class="token operator">=</span> node<span class="token punctuation">;</span>
-        p <span class="token operator">=</span> node<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> newHead<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ListNode node1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode node2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode node3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode node4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    node1<span class="token punctuation">.</span>next <span class="token operator">=</span> node2<span class="token punctuation">;</span>
-    node2<span class="token punctuation">.</span>next <span class="token operator">=</span> node3<span class="token punctuation">;</span>
-    node3<span class="token punctuation">.</span>next <span class="token operator">=</span> node4<span class="token punctuation">;</span>
-
-    node1 <span class="token operator">=</span> <span class="token function">reverseListByStack</span><span class="token punctuation">(</span>node1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">while</span><span class="token punctuation">(</span>node1 <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>node1<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        node1 <span class="token operator">=</span> node1<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TCLTV</span> <span class="token keyword">implements</span> <span class="token class-name">TV</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"TCL电视播放..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<h4 id="高级解法"><a href="#高级解法" class="headerlink" title="高级解法"></a>高级解法</h4><p>只额外使用了两个只针，这种解法的空间复杂度能达到o(1)，时间复杂度同样为o(n)。</p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> ListNode <span class="token function">reverseList</span><span class="token punctuation">(</span>ListNode head<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ListNode pre <span class="token operator">=</span> null<span class="token punctuation">;</span>
-    ListNode next <span class="token operator">=</span> null<span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>head <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        next <span class="token operator">=</span> head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
-        head<span class="token punctuation">.</span>next <span class="token operator">=</span> pre<span class="token punctuation">;</span>
-        pre <span class="token operator">=</span> head<span class="token punctuation">;</span>
-        head <span class="token operator">=</span> next<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> pre<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ListNode node1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode node2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode node3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    ListNode node4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ListNode</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    node1<span class="token punctuation">.</span>next <span class="token operator">=</span> node2<span class="token punctuation">;</span>
-    node2<span class="token punctuation">.</span>next <span class="token operator">=</span> node3<span class="token punctuation">;</span>
-    node3<span class="token punctuation">.</span>next <span class="token operator">=</span> node4<span class="token punctuation">;</span>
-
-    node1 <span class="token operator">=</span> <span class="token function">reverse</span><span class="token punctuation">(</span>node1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">while</span><span class="token punctuation">(</span>node1 <span class="token operator">!=</span> null<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>node1<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        node1 <span class="token operator">=</span> node1<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">XiaoMiTV</span> <span class="token keyword">implements</span> <span class="token class-name">TV</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"小米电视播放..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>具体步骤，如下图：</p>
-<p><img src="/2019/02/28/ListReverseDemo/image-20190302003014433.png" alt></p>
+<p>创建工厂接口：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">TVFactory</span> <span class="token punctuation">{</span>
+    TV <span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>创建工厂的实现类：</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HairTVFactory</span> <span class="token keyword">implements</span> <span class="token class-name">TVFactory</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> TV <span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"海尔电视工厂 生产 海尔电视"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">HairTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TCLTVFactory</span> <span class="token keyword">implements</span> <span class="token class-name">TVFactory</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> TV <span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"TCL电视工厂 生产 TCL电视"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TCLTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">XiaoMiTVFactory</span> <span class="token keyword">implements</span> <span class="token class-name">TVFactory</span><span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> TV <span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"小米电视工厂 生产 小米电视"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">XiaoMiTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>测试</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        TV haierTV <span class="token operator">=</span>  null<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 定义tv对象</span>
+        TVFactory hairTVFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HairTVFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 定义工厂</span>
+        haierTV <span class="token operator">=</span> hairTVFactory<span class="token punctuation">.</span><span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 创建电视对象</span>
+        haierTV<span class="token punctuation">.</span><span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 播放电视</span>
+
+        TV tclTV <span class="token operator">=</span>  null<span class="token punctuation">;</span>
+        TVFactory tclTVFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TCLTVFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        tclTV <span class="token operator">=</span> tclTVFactory<span class="token punctuation">.</span><span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        tclTV<span class="token punctuation">.</span><span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        TV xiaomiTV <span class="token operator">=</span>  null<span class="token punctuation">;</span>
+        TVFactory xiaomiTVFactory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XiaoMiTVFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xiaomiTV <span class="token operator">=</span> xiaomiTVFactory<span class="token punctuation">.</span><span class="token function">produceTV</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        xiaomiTV<span class="token punctuation">.</span><span class="token function">play</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+海尔电视工厂 生产 海尔电视
+海尔电视播放<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+TCL电视工厂 生产 TCL电视
+TCL电视播放<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+小米电视工厂 生产 小米电视
+小米电视播放<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</code></pre>
+<p>总结</p>
+<p>优点有：</p>
+<ul>
+<li>用户只需要知道具体工厂的名称就可得到所要的产品，无须知道产品的具体创建过程；</li>
+<li>在系统增加新的产品时只需要添加具体产品类和对应的具体工厂类，无须对原工厂进行任何修改，满足开闭原则；</li>
+</ul>
+<p>缺点是：每增加一个产品就要增加一个具体产品类和一个对应的具体工厂类，这增加了系统的复杂度。</p>
+<p>适用性：</p>
+<ul>
+<li><p>当客户端类不知道它所创建的对象的具体类时，例如需要创建一个电视，但是并不知道创建的是哪种电视；</p>
+</li>
+<li><p>当一个类希望有它的子类来来确定它所创建的对象时；</p>
+</li>
+<li><p>当类间创建对象的职责委托给多个子类中的某一个，并且希望将哪一个子类是代理者这一信息局部化时。</p>
+</li>
+</ul>
 
             </div>
             <hr>
@@ -643,7 +683,7 @@ public class ListNode {
                     </span>
                     <a href="https://lanchunqiu.github.io" class="b-link-green">lanchunqiu.github.io</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/02/28/ListReverseDemo/" class="b-link-green">如何将一个单链表逆置？</a>
+                    <a href="/2019/03/02/DesignPattern/" class="b-link-green">设计模式</a>
                 </p>
             </div>
         </div>
@@ -666,7 +706,8 @@ public class ListNode {
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2019/03/02/DesignPattern/">
                     <div class="card-image">
@@ -680,9 +721,9 @@ public class ListNode {
                 <div class="card-content article-content">
                     <div class="summary">电商、社交网络、移动互联网……这一个个名称称为近几年来互联网发展的代名词，而在背后推动者中高数发展的就是技术。敏捷开发是互联网企业进行产品开发时常用的一种模式，一个产品从制定需求到上线甚至在一周之内就要王朝，毕竟快竞争对手一步才能抓住更多的</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-02
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -695,6 +736,7 @@ public class ListNode {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -717,28 +759,54 @@ public class ListNode {
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/02/28/hello-world/">
+                <a href="/2019/02/28/ListReverseDemo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="如何将一个单链表逆置？">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">如何将一个单链表逆置？</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex</div>
+                    <div class="summary">如何将一个单链表逆置？
+链表的节点
+public class ListNode {
+    public int value;
+    public ListNode next;
+
+    public ListNode(int value</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-02-28
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fa fa-user fa-fw"></i>
-                            lanchunqiu
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/算法/" class="post-category" target="_blank">
+                                    算法
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Java/" target="_blank">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                    <a href="/tags/算法/" target="_blank">
+                        <span class="chip bg-color">算法</span>
+                    </a>
+                    
+                    <a href="/tags/数据结构/" target="_blank">
+                        <span class="chip bg-color">数据结构</span>
+                    </a>
+                    
                 </div>
                 
             </div>
