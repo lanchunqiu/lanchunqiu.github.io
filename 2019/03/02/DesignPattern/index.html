@@ -520,7 +520,7 @@ TCL电视播放<span class="token punctuation">.</span><span class="token punctu
 小米电视工厂 生产 小米电视
 小米电视播放<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 </code></pre>
-<p>总结</p>
+<p>工厂方法模式总结</p>
 <p>优点有：</p>
 <ul>
 <li>用户只需要知道具体工厂的名称就可得到所要的产品，无须知道产品的具体创建过程；</li>
@@ -679,7 +679,7 @@ B产品的共有方法
 B产品的共有方法
 <span class="token number">2</span>级产品B的实现方法
 </code></pre>
-<p>总结</p>
+<p>抽象工厂模式总结</p>
 <p>主要优点如下：</p>
 <ul>
 <li>分离了具体的类，工厂封装了创建产品对象的责任和过程，将客户端和类的实现分类。客户端通过抽象接口操纵实例。</li>
@@ -1015,7 +1015,7 @@ Product<span class="token operator">:</span>
 Part A2
 Part B2
 </code></pre>
-<p>总结</p>
+<p>建造者模式总结</p>
 <p>该模式的主要优点如下：</p>
 <ul>
 <li><p>各个具体的建造者相互独立，有利于系统的扩展；</p>
@@ -1036,6 +1036,201 @@ Part B2
 <li>当构造过程必须允许被构造的对象有不同的表示时；</li>
 </ul>
 <p>建造者（Builder）模式和工厂模式的关注点不同：建造者模式注重零部件的组装过程，而工厂方法模式更注重零部件的创建过程，但两者可以结合使用。</p>
+<h4 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h4><p>原型模式的定义：用原型示例指定创建对象的种类，并且通过拷贝这些原型创建新对象。</p>
+<p>所谓原型模式，其实就是依托一个已经实例化的对象去创建另外一个可以进行定制的对象，而不需要知道创建过程中的具体细节。</p>
+<p>原型模式包含以下主要角色。</p>
+<ul>
+<li><p>抽象原型类：规定了具体原型对象必须实现的接口；</p>
+</li>
+<li><p>具体原型类：实现抽象原型类的 clone() 方法，它是可被复制的对象；</p>
+</li>
+<li><p>访问类：使用具体原型类中的 clone() 方法来复制新的对象；</p>
+</li>
+</ul>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/PrototypePattern.png" alt></p>
+<p>示例</p>
+<p>在Java中，复制对象是通过clone()方法实现的，Java的clone()方法是浅拷贝。创建原型类</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RobotPrototype</span> <span class="token keyword">implements</span> <span class="token class-name">Cloneable</span><span class="token punctuation">,</span>Serializable<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">long</span> rid<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//机器人序列号，每个机器人序列号均不相同</span>
+    <span class="token keyword">private</span> CPU cpu<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//使用的CPU，每个机器人的CPU均不相同</span>
+    <span class="token keyword">private</span> String birthday<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//生产日期</span>
+    <span class="token keyword">private</span> String factory<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//生产工厂</span>
+
+    <span class="token keyword">public</span> <span class="token function">RobotPrototype</span><span class="token punctuation">(</span><span class="token keyword">long</span> rid<span class="token punctuation">,</span> String birthday<span class="token punctuation">,</span> String factory<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>rid <span class="token operator">=</span> rid<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>birthday <span class="token operator">=</span> birthday<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>factory <span class="token operator">=</span> factory<span class="token punctuation">;</span>
+        cpu <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CPU</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">getRid</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> rid<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setRid</span><span class="token punctuation">(</span><span class="token keyword">long</span> rid<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>rid <span class="token operator">=</span> rid<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCpu</span><span class="token punctuation">(</span><span class="token keyword">long</span> cpu_no<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cpu<span class="token punctuation">.</span><span class="token function">setCpu_no</span><span class="token punctuation">(</span>cpu_no<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getBirthday</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> birthday<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setBirthday</span><span class="token punctuation">(</span>String birthday<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>birthday <span class="token operator">=</span> birthday<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> factory<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setFactory</span><span class="token punctuation">(</span>String factory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>factory <span class="token operator">=</span> factory<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 浅拷贝
+     * @return
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> Object <span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">CloneNotSupportedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 深拷贝
+     * @return
+     */</span>
+    <span class="token keyword">protected</span> Object <span class="token function">deepClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            ByteArrayOutputStream bos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayOutputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ObjectOutputStream oos <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectOutputStream</span><span class="token punctuation">(</span>bos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            oos<span class="token punctuation">.</span><span class="token function">writeObject</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            ByteArrayInputStream bis <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span>bos<span class="token punctuation">.</span><span class="token function">toByteArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ObjectInputStream ois <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectInputStream</span><span class="token punctuation">(</span>bis<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            RobotPrototype robot <span class="token operator">=</span> <span class="token punctuation">(</span>RobotPrototype<span class="token punctuation">)</span> ois<span class="token punctuation">.</span><span class="token function">readObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            robot<span class="token punctuation">.</span><span class="token function">setCpu</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            robot<span class="token punctuation">.</span><span class="token function">setRid</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> robot<span class="token punctuation">.</span>cpu<span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> robot<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"机器人序列号："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>rid <span class="token operator">+</span> <span class="token string">"\n\t"</span> <span class="token operator">+</span>
+                <span class="token string">"生产日期："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>birthday  <span class="token operator">+</span> <span class="token string">"\n\t"</span> <span class="token operator">+</span>
+                <span class="token string">"生产工程："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>factory <span class="token operator">+</span> <span class="token string">"\n\t"</span> <span class="token operator">+</span>
+                <span class="token string">"使用的CPU信息："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>cpu<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"\n\t"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>通过对象的序列化和反序列化来实现深拷贝。</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CPU</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">long</span> cpu_no<span class="token punctuation">;</span><span class="token comment" spellcheck="true">//cpu序列号，每个CPU序列号均不相同</span>
+    <span class="token keyword">public</span> <span class="token keyword">long</span> <span class="token function">getCpu_no</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> cpu_no<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCpu_no</span><span class="token punctuation">(</span><span class="token keyword">long</span> cpu_no<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>cpu_no <span class="token operator">=</span> cpu_no <span class="token operator">+</span> System<span class="token punctuation">.</span><span class="token function">nanoTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token string">"cpu_no: "</span> <span class="token operator">+</span> cpu_no <span class="token operator">+</span> <span class="token string">", hashCode:"</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>测试</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        RobotPrototype protype_robot <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RobotPrototype</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"2018-4-26"</span><span class="token punctuation">,</span> <span class="token string">"富士康机器人生产工厂"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        protype_robot<span class="token punctuation">.</span><span class="token function">setCpu</span><span class="token punctuation">(</span>System<span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"原型机 ["</span> <span class="token operator">+</span> protype_robot<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            RobotPrototype robot <span class="token operator">=</span> <span class="token punctuation">(</span>RobotPrototype<span class="token punctuation">)</span> protype_robot<span class="token punctuation">.</span><span class="token function">deepClone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"robot"</span> <span class="token operator">+</span> i <span class="token operator">+</span> <span class="token string">" ["</span> <span class="token operator">+</span> robot<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+原型机 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1551522612533</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939540956962</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">1826771953</span>
+    <span class="token punctuation">]</span>
+robot0 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1552334878300</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939636725580</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">812265671</span>
+    <span class="token punctuation">]</span>
+robot1 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1551715676989</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939637142517</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">193064360</span>
+    <span class="token punctuation">]</span>
+robot2 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1551632574171</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939637444134</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">109961541</span>
+    <span class="token punctuation">]</span>
+robot3 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1552193313008</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939637755232</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">670700378</span>
+    <span class="token punctuation">]</span>
+robot4 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1552713267456</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939638066609</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">1190654826</span>
+    <span class="token punctuation">]</span>
+robot5 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1552631984200</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939638432856</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">1109371569</span>
+    <span class="token punctuation">]</span>
+robot6 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1552251503125</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939638821939</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">728890494</span>
+    <span class="token punctuation">]</span>
+robot7 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1553081212960</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939639177528</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">1558600329</span>
+    <span class="token punctuation">]</span>
+robot8 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1552159331444</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939639639177</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">636718812</span>
+    <span class="token punctuation">]</span>
+robot9 <span class="token punctuation">[</span>机器人序列号：<span class="token number">1551967664265</span>
+    生产日期：<span class="token number">2018</span><span class="token operator">-</span><span class="token number">4</span><span class="token operator">-</span><span class="token number">26</span>
+    生产工程：富士康机器人生产工厂
+    使用的CPU信息：cpu_no<span class="token operator">:</span> <span class="token number">199939640067454</span><span class="token punctuation">,</span> hashCode<span class="token operator">:</span><span class="token number">445051633</span>
+    <span class="token punctuation">]</span>
+
+</code></pre>
+<p>原型模式总结</p>
+<p>原型模式适用于以下几种情景：</p>
+<ul>
+<li><p>当要实例化的类是在运行时刻指定时；</p>
+</li>
+<li><p>为了避免创建一个与产品类层次平行的工厂类层次时；</p>
+</li>
+<li><p>当一个类的实例只能有几个不同状态组合中的一种时；</p>
+</li>
+</ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
             </div>
             <hr>
