@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>跳跃游戏</title>
+      <link href="/2019/03/02/JumpGame/"/>
+      <url>/2019/03/02/JumpGame/</url>
+      
+        <content type="html"><![CDATA[<p>给定一个非负整数数组，你最初位于数组的第一个位置。数组中的每个元素代表你在该位置可以跳跃的最大长度。判断你是否能够到达最后一个位置。<a href="https://leetcode-cn.com/problems/jump-game/" target="_blank" rel="noopener">LeetCode</a></p><p>示例1</p><pre class=" language-txt"><code class="language-txt">输入: [2,3,1,1,4]输出: true解释: 从位置 0 到 1 跳 1 步, 然后跳 3 步到达最后一个位置。</code></pre><p>示例2</p><pre class=" language-txt"><code class="language-txt">输入: [3,2,1,0,4]输出: false解释: 无论怎样，你总会到达索引为 3 的位置。但该位置的最大跳跃长度是 0 ， 所以你永远不可能到达最后一个位置。</code></pre><p>暴力解法</p><p>处理思路：令reach=0,然后遍历数组元素比较a[i]+i与reach的大小，如果比reach值大就和reach的值交换，否则reach不变，最后如果reach大于等于数组的长度，返回true，否则返回false。</p><pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">canJump</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>        <span class="token keyword">int</span> reach <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">&lt;</span> a<span class="token punctuation">.</span>length <span class="token operator">&amp;&amp;</span> i <span class="token operator">&lt;=</span> reach<span class="token punctuation">)</span><span class="token punctuation">{</span>            reach <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>reach<span class="token punctuation">,</span> i <span class="token operator">+</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token keyword">if</span><span class="token punctuation">(</span>reach <span class="token operator">>=</span> a<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>            <span class="token punctuation">}</span>            i<span class="token operator">++</span><span class="token punctuation">;</span>        <span class="token punctuation">}</span>        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>设计模式</title>
       <link href="/2019/03/02/DesignPattern/"/>
       <url>/2019/03/02/DesignPattern/</url>
