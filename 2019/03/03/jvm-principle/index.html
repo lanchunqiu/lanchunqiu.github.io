@@ -430,7 +430,7 @@
 <h3 id="对象头（Header）"><a href="#对象头（Header）" class="headerlink" title="对象头（Header）"></a>对象头（Header）</h3><p>对象头包括两部分信息：</p>
 <ul>
 <li><p>第一部分为Mark Word，用于存储对象自身的运行时数据，如哈希码（HashCode）、GC分代年龄、锁状态标志、线程吃药的锁、偏向线程ID、偏向时间戳等。Mark Word在32位JVM中的长度是32bit，在64位JVM中长度是64bit。例如，在32位的HotSpot虚拟机中，如果对象处于未被锁定的状态下，那么MarkWord的32位空间中的25位用于存储对象哈希码，4位用于存储对象分代年龄，2位用于存储锁标志位，1位固定为0。</p>
-<p><img src="/2019/03/03/jvm-principle/MarkWord.PNG" alt></p>
+<p><img src="/2019/03/03/jvm-principle/MarkWord.png" alt></p>
 <p>其中<strong>无锁</strong>和<strong>偏向锁</strong>的锁标志位都是01，只是在前面的1bit区分了这是无锁状态还是偏向锁状态。</p>
 <p>JDK1.6对锁进行了优化，以后的版本在处理同步锁时存在锁升级的概念，JVM对于同步锁的处理是从<strong>偏向锁</strong>开始的，随着竞争越来越激烈，处理方式从<strong>偏向锁</strong>升级到<strong>轻量级锁</strong>，最终升级到<strong>重量级锁</strong>。</p>
 <p>JVM一般是这样使用锁和Mark Word的：</p>
