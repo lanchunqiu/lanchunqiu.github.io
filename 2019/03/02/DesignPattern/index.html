@@ -1542,6 +1542,131 @@ API2<span class="token punctuation">.</span>circle at <span class="token number"
 <li>以前开发的系统存在满足新系统功能需求的类，但其接口同新系统的接口不一致；</li>
 <li>使用第三方提供的组件，但组件接口定义和自己要求的接口定义不同；</li>
 </ul>
+<h4 id="3-装饰器模式"><a href="#3-装饰器模式" class="headerlink" title="3.装饰器模式"></a>3.装饰器模式</h4><p>当对一个类的功能进行扩展时，程序员往往会往类里面增加新的方法。但是，有时程序在运行中就需要生成一个具有新的行为的对象，当所增加的行为相当于整个类来说比较微小时，最好可以做到在不改变原有类文件和使用继承的情况下，动态扩展某个对象的功能。此时，就需要使用装饰器模式。</p>
+<p>装饰器模式（Decorator) 定义：动态地给一个对象添加一些额外的职责，就新增加的功能来说，装饰器模式比生成子类更为灵活。</p>
+<p>装饰模式主要包含以下角色：</p>
+<ol>
+<li><strong>抽象构件（Component）</strong>角色：定义一个抽象接口以规范准备接收附加责任的对象。</li>
+<li><strong>具体构件（ConcreteComponent）</strong>角色：实现抽象构件，通过装饰角色为其添加一些职责。</li>
+<li><strong>抽象装饰（Decorator）</strong>角色：继承抽象构件，并包含具体构件的实例，可以通过其子类扩展具体构件的功能。</li>
+<li><strong>具体装饰（ConcreteDecorator）</strong>角色：实现抽象装饰的相关方法，并给具体构件对象添加附加的责任。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/DecoratorPattern.png" alt></p>
+<p>示例</p>
+<p>抽象组件角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 基本操作</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体组件角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteComponent</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 基本操作</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"基本操作"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>抽象装饰器角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Decorator</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> Component component<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setComponent</span><span class="token punctuation">(</span>Component component<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>component <span class="token operator">=</span> component<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 基本操作</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>null <span class="token operator">!=</span> component<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            component<span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体装饰器角色A</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteDecoratorA</span> <span class="token keyword">extends</span> <span class="token class-name">Decorator</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String addedState<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        addedState <span class="token operator">=</span> <span class="token string">"新增状态"</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"这个类具有一个状态："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>addedState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体装饰器角色B</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteDecoratorB</span> <span class="token keyword">extends</span> <span class="token class-name">Decorator</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">addedBehavior</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"现在这个对象有一个新方法！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">addedBehavior</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        Component component <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteComponent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment" spellcheck="true">// 实例化两个装饰器</span>
+        ConcreteDecorator decoratorA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteDecoratorA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ConcreteDecorator decoratorB <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteDecoratorB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 对component进行装饰</span>
+        decoratorA<span class="token punctuation">.</span><span class="token function">setComponent</span><span class="token punctuation">(</span>component<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"经过装饰器A装饰后的操作："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        decoratorA<span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 对component进行装饰</span>
+        decoratorB<span class="token punctuation">.</span><span class="token function">setComponent</span><span class="token punctuation">(</span>component<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"经过装饰器B装饰后的操作："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        decoratorB<span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+输出结果：
+经过装饰器A装饰后的操作：
+基本操作
+这个类具有一个状态：新增状态
+经过装饰器B装饰后的操作：
+基本操作
+现在这个对象有一个新方法！
+</code></pre>
+<p>例如Java中的FilterInputStream也是使用的装饰器模式：</p>
+<p><img src="/2019/03/02/DesignPattern/InputStream.png" alt></p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DecoratorDemo</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> FileNotFoundException <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//FileInputStream被装饰者</span>
+        InputStream inputStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileInputStream</span><span class="token punctuation">(</span><span class="token string">"a.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//装饰者</span>
+        <span class="token comment" spellcheck="true">//DataInputStream &lt;- FilterInputStream &lt;- InputStream</span>
+        FilterInputStream filterInputStream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DataInputStream</span><span class="token punctuation">(</span>inputStream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>装饰器模式总结</p>
+<p>装饰（Decorator）模式的主要优点有：</p>
+<ul>
+<li>采用装饰模式扩展对象的功能比采用继承方式更加灵活。</li>
+<li>可以设计出多个不同的具体装饰类，创造出多个不同行为的组合。</li>
+</ul>
+<p>其主要缺点是：装饰模式增加了许多子类，如果过度使用会使程序变得很复杂。</p>
+<p>装饰器模式主要适用于以下几种情况：</p>
+<ul>
+<li><p>当需要以不影响其他对象为前提实现动态、透明地给单个对象添加职责时；</p>
+</li>
+<li><p>当需要将对象的某些职责进行撤销操作时；</p>
+</li>
+<li><p>当不能使用生成子类的方法进行当前系统的扩充时；</p>
+</li>
+</ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
             </div>
             <hr>
