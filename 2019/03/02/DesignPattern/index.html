@@ -1231,7 +1231,7 @@ robot9 <span class="token punctuation">[</span>机器人序列号：<span class=
 <li><p>当一个类的实例只能有几个不同状态组合中的一种时；</p>
 </li>
 </ul>
-<h3 id="二、创建型模式"><a href="#二、创建型模式" class="headerlink" title="二、创建型模式"></a>二、创建型模式</h3><h4 id="1-桥接模式"><a href="#1-桥接模式" class="headerlink" title="1.桥接模式"></a>1.桥接模式</h4><p>桥接模式的定义：将抽象部分与它的的实现部分分离，使它们都可以独立地变化。它是用组合关系代替继承关系来实现，从而降低了抽象和实现这两个可变维度的耦合度。</p>
+<h3 id="二、结构型模式"><a href="#二、结构型模式" class="headerlink" title="二、结构型模式"></a>二、结构型模式</h3><h4 id="1-桥接模式"><a href="#1-桥接模式" class="headerlink" title="1.桥接模式"></a>1.桥接模式</h4><p>桥接模式的定义：将抽象部分与它的的实现部分分离，使它们都可以独立地变化。它是用组合关系代替继承关系来实现，从而降低了抽象和实现这两个可变维度的耦合度。</p>
 <p>桥接（Bridge）模式包含以下主要角色：</p>
 <ol>
 <li><strong>抽象化（Abstraction）</strong>角色：定义抽象类，并包含一个对实现化对象的引用。</li>
@@ -1665,6 +1665,191 @@ API2<span class="token punctuation">.</span>circle at <span class="token number"
 <li><p>当需要将对象的某些职责进行撤销操作时；</p>
 </li>
 <li><p>当不能使用生成子类的方法进行当前系统的扩充时；</p>
+</li>
+</ul>
+<h4 id="4-组合模式"><a href="#4-组合模式" class="headerlink" title="4.组合模式"></a>4.组合模式</h4><p>在现实生活中有很多部分与整体的关系，比如大学里的一个院系是一个大学的一部分，而院系所设置的学生办公室是院系的一部分。其实这种部分与整体的结构跟我们每天都有见到的树的结构非常相像。这种类型树的结构的设计模式就是组合模式。</p>
+<p><strong>组合模式（Composite）</strong>的定义：将对象组合成树形结构以表示“部分-整体”的层次结构。组合模式使得用户对单个对象和组合对象的使用具有一致性。</p>
+<p>组合模式包含以下主要角色：</p>
+<ol>
+<li><strong>抽象构件（Component）</strong>角色：它的主要作用是为树叶构件和树枝构件声明公共接口，并实现它们的默认行为。在透明式的组合模式中抽象构件还声明访问和管理子类的接口；在安全式的组合模式中不声明访问和管理子类的接口，管理工作由树枝构件完成。</li>
+<li><strong>树叶构件（Leaf）</strong>角色：是组合中的叶节点对象，它没有子节点，用于实现抽象构件角色中 声明的公共接口。</li>
+<li><strong>树枝构件（Composite）</strong>角色：是组合中的分支节点对象，它有子节点。它实现了抽象构件角色中声明的接口，它的主要作用是存储和管理子部件，通常包含 Add()、Remove()、GetChild() 等方法。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/CompositePattern.png" alt></p>
+<p>组合模式分为<strong>透明式的组合模式</strong>和<strong>安全式的组合模式</strong>：</p>
+<ul>
+<li><p><strong>透明方式</strong>：在该方式中，由于抽象构件声明了所有子类中的全部方法，所以客户端无须区别树叶对象和树枝对象，对客户端来说是透明的。但其缺点是：树叶构件本来没有 Add()、Remove() 及 GetChild() 方法，却要实现它们（空实现或抛异常），这样会带来一些安全性问题。</p>
+</li>
+<li><p><strong>安全方式</strong>：在该方式中，将管理子构件的方法移到树枝构件中，抽象构件和树叶构件没有对子对象的管理方法，这样就避免了上一种方式的安全性问题，但由于叶子和分支有不同的接口，客户端在调用时要知道树叶对象和树枝对象的存在，所以失去了透明性。</p>
+</li>
+</ul>
+<p>透明组合模式示例</p>
+<p>抽象组件</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//抽象组件</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Component c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Component c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Component <span class="token function">getChild</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>树枝组件</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//树枝组件</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Composite</span> <span class="token keyword">implements</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Component<span class="token operator">></span> children<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Component<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Component c<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        children<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Component c<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        children<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Component <span class="token function">getChild</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> children<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>Object obj<span class="token operator">:</span>children<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token punctuation">(</span><span class="token punctuation">(</span>Component<span class="token punctuation">)</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>树叶组件</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//树叶组件</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Leaf</span> <span class="token keyword">implements</span> <span class="token class-name">Component</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String name<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">Leaf</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token operator">=</span>name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Component c<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Component c<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Component <span class="token function">getChild</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> null<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"树叶"</span><span class="token operator">+</span>name<span class="token operator">+</span><span class="token string">"：被访问！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Component c0<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Composite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Component c1<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Composite</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Component leaf1<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Leaf</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Component leaf2<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Leaf</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Component leaf3<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Leaf</span><span class="token punctuation">(</span><span class="token string">"3"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c0<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>leaf1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c0<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>c1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c1<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>leaf2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c1<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>leaf3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c0<span class="token punctuation">.</span><span class="token function">operation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+树叶<span class="token number">1</span>：被访问！
+树叶<span class="token number">2</span>：被访问！
+树叶<span class="token number">3</span>：被访问！
+</code></pre>
+<p>安全组合模式示例</p>
+<p>抽象组件角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//Component</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Graphic</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>树枝组件角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//Composite</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CompositeGraphic</span> <span class="token keyword">implements</span> <span class="token class-name">Graphic</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//Collection of child graphics.</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Graphic<span class="token operator">></span> childGraphic <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Graphic<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>Graphic graphic <span class="token operator">:</span> childGraphic<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            graphic<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Graphic graphic<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        childGraphic<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>graphic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Graphic graphic<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        childGraphic<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>graphic<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>树叶组件角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">//Leaf</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Ellipse</span> <span class="token keyword">implements</span> <span class="token class-name">Graphic</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Ellipse print"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//Initialize four ellipses</span>
+        Ellipse ellipse1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ellipse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Ellipse ellipse2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ellipse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Ellipse ellipse3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ellipse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Ellipse ellipse4 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Ellipse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//Initialize composite graphic</span>
+        CompositeGraphic graphic <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CompositeGraphic</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//Composes the graphics</span>
+        graphic<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>ellipse1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        graphic<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>ellipse2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        graphic<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>ellipse3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        graphic<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>ellipse4<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//Prints the complete graphic (Four times the string "Ellipse").</span>
+        graphic<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+Ellipse print
+Ellipse print
+Ellipse print
+Ellipse print
+</code></pre>
+<p>组合模式总结</p>
+<p>组合模式的主要优点有：</p>
+<ul>
+<li><p>组合模式使得客户端代码可以一致地处理单个对象和组合对象，无须关心自己处理的是单个对象，还是组合对象，这简化了客户端代码；</p>
+</li>
+<li><p>更容易在组合体内加入新的对象，客户端不会因为加入了新的对象而更改源代码，满足“开闭原则”；</p>
+</li>
+</ul>
+<p>其主要缺点是：</p>
+<ul>
+<li><p>设计较复杂，客户端需要花更多时间理清类之间的层次关系；</p>
+</li>
+<li><p>不容易限制容器中的构件；</p>
+</li>
+<li><p>不容易用继承的方法来增加构件的新功能；</p>
+</li>
+</ul>
+<p>组合模式适用于以下应用场景：</p>
+<ul>
+<li><p>在需要表示一个对象整体与部分的层次结构的场合。</p>
+</li>
+<li><p>要求对用户隐藏组合对象与单个对象的不同，用户可以用统一的接口使用组合结构中的所有对象的场合。</p>
 </li>
 </ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
