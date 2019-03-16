@@ -2043,7 +2043,7 @@ CoffeeFlavor objects in cache<span class="token operator">:</span> <span class="
 </ol>
 <p>结构图</p>
 <p><img src="/2019/03/02/DesignPattern/ProxyPattern.png" alt></p>
-<p>示例</p>
+<p>示例1</p>
 <p>抽象主题</p>
 <pre class=" language-java"><code class="language-java"><span class="token keyword">interface</span> <span class="token class-name">Subject</span>
 <span class="token punctuation">{</span>
@@ -2097,6 +2097,53 @@ CoffeeFlavor objects in cache<span class="token operator">:</span> <span class="
 访问真实主题方法<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 访问真实主题之后的后续处理。
 </code></pre>
+<p>示例2</p>
+<p>抽象主题角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 演员</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Performer</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/**
+     * 表演
+     */</span>
+    <span class="token keyword">void</span> <span class="token function">perform</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>真实主题</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 明星</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SuperStar</span> <span class="token keyword">implements</span> <span class="token class-name">Performer</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">perform</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"大明星表演"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>代理角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">// 经济人</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Agent</span> <span class="token keyword">implements</span> <span class="token class-name">Performer</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> SuperStar star<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token function">Agent</span><span class="token punctuation">(</span>SuperStar star<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>star <span class="token operator">=</span> star<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">perform</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"经济人接收到演出邀请"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"经济人向明星确认是否接受邀请"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        star<span class="token punctuation">.</span><span class="token function">perform</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        SuperStar star <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SuperStar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Agent agent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Agent</span><span class="token punctuation">(</span>star<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        agent<span class="token punctuation">.</span><span class="token function">perform</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+经济人接收到演出邀请
+经济人向明星确认是否接受邀请
+大明星表演
+</code></pre>
 <p>代理模式总结</p>
 <p>代理模式的主要优点有：</p>
 <ul>
@@ -2118,6 +2165,198 @@ CoffeeFlavor objects in cache<span class="token operator">:</span> <span class="
 <li><p>当需要控制对原始对象的访问时；</p>
 </li>
 <li><p>当需要在访问对象时执行一些附加操作时，比如可通过代理对象计算访问实际对象的次数。</p>
+</li>
+</ul>
+<h4 id="7-外观模式"><a href="#7-外观模式" class="headerlink" title="7.外观模式"></a>7.外观模式</h4><p>在现实的项目中，总会有一些遗留的难易维护的大型项目存在，但是这些存在的系统却能在某些场合发挥重要作用，所以在后续的开发人员不希望这种系统被废弃掉，一些新的开发需求就会依赖于这些难以维护的系统，在这种情况下，使用本外观模式将会极好地解决各种各样的可能会发生的问题。</p>
+<p><strong>外观（Facade）模式的定义</strong>：为子系统中的一组接口提供一个一致的界面，此模式定义了一个高层接口，这个接口使得这一个子系统更加容易使用。该模式对外有一个统一接口，外部应用程序不用关心内部子系统的具体的细节，这样会大大降低应用程序的复杂度，提高了程序的可维护性。</p>
+<p>外观（Facade）模式包含以下主要角色：</p>
+<ol>
+<li><strong>外观（Facade）角色</strong>：为多个子系统对外提供一个共同的接口；</li>
+<li><strong>子系统（SubSystem）角色</strong>：实现系统的部分功能，客户可以通过外观角色访问它；</li>
+<li><strong>客户（Client）角色</strong>：通过一个外观角色访问各个子系统的功能；</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/FacadePattern.png" alt></p>
+<p>示例1</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FacadeDemo</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Client角色</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ServiceFacade serviceFacade <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServiceFacade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        serviceFacade<span class="token punctuation">.</span><span class="token function">service</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ServiceA</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"save"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ServiceB</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"delete"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// Facade角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ServiceFacade</span><span class="token punctuation">{</span>
+        <span class="token keyword">private</span> ServiceA serviceA<span class="token punctuation">;</span>
+        <span class="token keyword">private</span> ServiceB serviceB<span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token function">ServiceFacade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            serviceA <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServiceA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            serviceB <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ServiceB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">service</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            serviceB<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            serviceA<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+delete
+save
+</code></pre>
+<p>示例2</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FacadeDemo2</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Client角色</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Facade facade <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Facade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        facade<span class="token punctuation">.</span><span class="token function">operation1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        facade<span class="token punctuation">.</span><span class="token function">operation2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SubSystemA</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> String <span class="token function">operationA1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"Subsystem A, Method A1\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> String <span class="token function">operationA2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"Subsystem A, Method A2\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SubSystemB</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> String <span class="token function">operationB1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"Subsystem B, Method B1\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> String <span class="token function">operationB2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"Subsystem B, Method B2\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">SubSystemC</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> String <span class="token function">operationC1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"Subsystem C, Method C1\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">public</span> String <span class="token function">operationC2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"Subsystem C, Method C2\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// Facade角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Facade</span><span class="token punctuation">{</span>
+        <span class="token keyword">private</span> SubSystemA a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SubSystemA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> SubSystemB b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SubSystemB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> SubSystemC c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SubSystemC</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"operation 1\n"</span> <span class="token operator">+</span>
+                    a<span class="token punctuation">.</span><span class="token function">operationA1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+                    b<span class="token punctuation">.</span><span class="token function">operationB1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+                    c<span class="token punctuation">.</span><span class="token function">operationC1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">operation2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"operation 2\n"</span> <span class="token operator">+</span>
+                    a<span class="token punctuation">.</span><span class="token function">operationA2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+                    b<span class="token punctuation">.</span><span class="token function">operationB2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+                    c<span class="token punctuation">.</span><span class="token function">operationC2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+operation <span class="token number">1</span>
+Subsystem A<span class="token punctuation">,</span> Method A1
+Subsystem B<span class="token punctuation">,</span> Method B1
+Subsystem C<span class="token punctuation">,</span> Method C1
+
+operation <span class="token number">2</span>
+Subsystem A<span class="token punctuation">,</span> Method A2
+Subsystem B<span class="token punctuation">,</span> Method B2
+Subsystem C<span class="token punctuation">,</span> Method C2
+</code></pre>
+<p>示例3</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FacadeDemo3</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// Client角色</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ComputerFacade computer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ComputerFacade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        computer<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">CPU</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">freeze</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"CPU: freeze"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">jump</span><span class="token punctuation">(</span><span class="token keyword">long</span> position<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"CPU: jump location "</span><span class="token operator">+</span> position<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"CPU: execute"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">HardDirve</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token keyword">long</span> lba<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">byte</span><span class="token punctuation">[</span>size<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// SubSystem角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Memory</span><span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">load</span><span class="token punctuation">(</span><span class="token keyword">long</span> position<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> data<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// Facade角色</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">ComputerFacade</span><span class="token punctuation">{</span>
+        <span class="token keyword">private</span> CPU processor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CPU</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> Memory ram <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Memory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">private</span> HardDirve hd <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HardDirve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">long</span> BOOT_ADDRESS <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token keyword">long</span> BOOT_SECTOR <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> SECTOR_SIZE <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            processor<span class="token punctuation">.</span><span class="token function">freeze</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            ram<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>BOOT_ADDRESS<span class="token punctuation">,</span>hd<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>BOOT_SECTOR<span class="token punctuation">,</span>SECTOR_SIZE<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            processor<span class="token punctuation">.</span><span class="token function">jump</span><span class="token punctuation">(</span>BOOT_ADDRESS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            processor<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+CPU<span class="token operator">:</span> freeze
+CPU<span class="token operator">:</span> jump location <span class="token number">1</span>
+CPU<span class="token operator">:</span> execute
+</code></pre>
+<p>外观模式总结：</p>
+<p>外观（Facade）模式是“迪米特法则”的典型应用，它有以下主要优点：</p>
+<ul>
+<li><p>降低了子系统与客户端之间的耦合度，使得子系统的变化不会影响调用它的客户类。</p>
+</li>
+<li><p>对客户屏蔽了子系统组件，减少了客户处理的对象数目，并使得子系统使用起来更加容易。</p>
+</li>
+<li><p>降低了大型软件系统中的编译依赖性，简化了系统在不同平台之间的移植过程，因为编译一个子系统不会影响其他的子系统，也不会影响外观对象。</p>
+</li>
+</ul>
+<p>外观（Facade）模式的主要缺点如下：</p>
+<ul>
+<li><p>不能很好地限制客户使用子系统类。</p>
+</li>
+<li><p>增加新的子系统可能需要修改外观类或客户端的源代码，违背了“开闭原则”。</p>
 </li>
 </ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
