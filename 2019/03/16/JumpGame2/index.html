@@ -4,10 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="输出正整数N以内的所有质数（素数）, lanchunqiu.github.io">
-    <meta name="description" content="输出N以内的所有质数（素数）例如：输入20，输出[2,3,5,7,11,13,17,19]
-方法1：贪心算法看到这到题时，立刻就能想到用嵌套循环，对于任意的n对【2，n-1】之间每个数取余，如果余数0，说明能除尽，则不是素数（质数）。
-  ">
+    <meta name="keywords" content="跳跃游戏II, lanchunqiu.github.io">
+    <meta name="description" content="给定一个非负整数数组，你最初位于数组的第一个位置。数组中的每个元素代表你在该位置可以跳跃的最大长度。你的目标是使用最少的跳跃次数到达数组的最后一个位置。LeetCode
+示例
+输入: [2,3,1,1,4]
+输出: 2
+解释: 跳到最后一个">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>输出正整数N以内的所有质数（素数） | lanchunqiu.github.io</title>
+    <title>跳跃游戏II | lanchunqiu.github.io</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -259,13 +261,13 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        输出正整数N以内的所有质数（素数）
+                        跳跃游戏II
                     </div>
                 </div>
             </div>
@@ -365,6 +367,10 @@
                                 <span class="chip bg-color">算法</span>
                             </a>
                         
+                            <a href="/tags/LeetCode/" target="_blank">
+                                <span class="chip bg-color">LeetCode</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -385,7 +391,7 @@
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-03-06
+                    2019-03-16
                 </div>
 
                 
@@ -401,67 +407,58 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="输出N以内的所有质数（素数）"><a href="#输出N以内的所有质数（素数）" class="headerlink" title="输出N以内的所有质数（素数）"></a>输出N以内的所有质数（素数）</h3><p>例如：输入20，输出[2,3,5,7,11,13,17,19]</p>
-<h3 id="方法1：贪心算法"><a href="#方法1：贪心算法" class="headerlink" title="方法1：贪心算法"></a>方法1：贪心算法</h3><p>看到这到题时，立刻就能想到用嵌套循环，对于任意的n对【2，n-1】之间每个数取余，如果余数0，说明能除尽，则不是素数（质数）。</p>
-<pre class=" language-java"><code class="language-java">    <span class="token comment" spellcheck="true">/**
-     * 贪心算法
-     * @param num
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> <span class="token function">getPrimes</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span>num <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token keyword">int</span> n <span class="token operator">=</span> num<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
-            <span class="token keyword">boolean</span> flag <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-            <span class="token keyword">while</span><span class="token punctuation">(</span>n <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>num <span class="token operator">%</span> n <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                    n<span class="token operator">--</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                    flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                    <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">{</span>
-                list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            num<span class="token operator">--</span><span class="token punctuation">;</span>
+                <p>给定一个非负整数数组，你最初位于数组的第一个位置。数组中的每个元素代表你在该位置可以跳跃的最大长度。你的目标是使用最少的跳跃次数到达数组的最后一个位置。<a href="https://leetcode-cn.com/problems/jump-game-ii/" target="_blank" rel="noopener">LeetCode</a></p>
+<p>示例</p>
+<pre><code>输入: [2,3,1,1,4]
+输出: 2
+解释: 跳到最后一个位置的最小跳跃数是 2。
+     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+</code></pre><p><strong>说明:</strong></p>
+<p>假设你总是可以到达数组的最后一个位置。</p>
+<p><strong>贪心算法：</strong></p>
+<p>这里贪心的意思，不是说当前位置最大可以跳多少步就跳多少步，而是在当前位置可以跳的步数的范围内，选择下一跳可以跳的最远的那个步数，来决定当前跳多少步。</p>
+<p>解题思路：</p>
+<ul>
+<li>另L、R均表示数组的下标位置；<ul>
+<li>在[L,R]范围内找出最大的数作为下一个跳跃的位置，所以关键是怎么找出下一个跳跃的位置；</li>
+<li>例子a=[2,3,1,1,4]</li>
+<li>开始,第a[0]=2，则【L,R】=【0,2】，在此区间内可以到达的位置为{a[0]+0, a[1]+1, a[2]+2} = {2+0, 3+1, 1+2}，最大值为a[1]+1=3+1，所以下一个跳跃的位置就为a[1];</li>
+<li>L=1,R=a[1]=3，则【L,R】=【1,4】，在此区间内可到达的位置{a[1]+1, a[2]+2, a[3]+3, a[4]+4}={3+1,1+2,1+3,4+4}={4,3,4,8},最大值为a[4]+4=8,所以下一次跳跃的位置为a[4]，即跳到最后一个位置至少要2步。</li>
+</ul>
+</li>
+</ul>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">jump</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//不用跳的情况</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span> a <span class="token operator">==</span> null <span class="token operator">||</span> a<span class="token punctuation">.</span>length <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> list<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-</code></pre>
-<h3 id="方法2：算法改进"><a href="#方法2：算法改进" class="headerlink" title="方法2：算法改进"></a>方法2：算法改进</h3><p>其实，贪心算法中右一些多余的判断，比如，偶数肯定不是质数；对于一个正整数n只需要判断【2，n的平方根】之间的有没有整数能被n整除，如果有就不是质数。</p>
-<pre class=" language-java"><code class="language-java">   <span class="token comment" spellcheck="true">/**
-     * 算法优化：每个数n只比较[2 ~ sqrt(n)]之内的奇数
-     * @param num
-     * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> <span class="token function">getPrimes2</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        List<span class="token operator">&lt;</span>Integer<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>num <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token keyword">return</span> list<span class="token punctuation">;</span>
-        <span class="token punctuation">}</span>
-        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">&lt;=</span> num<span class="token punctuation">)</span><span class="token punctuation">{</span>
-            <span class="token keyword">int</span> sqrt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">boolean</span> flag <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-            <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
-            <span class="token keyword">while</span><span class="token punctuation">(</span>j <span class="token operator">&lt;=</span> sqrt<span class="token punctuation">)</span><span class="token punctuation">{</span>
-                <span class="token keyword">if</span><span class="token punctuation">(</span>i <span class="token operator">%</span> j <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                    j <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//只判断奇数</span>
-                <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                    flag <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-                    <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            <span class="token punctuation">}</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">{</span>
-                list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-            i <span class="token operator">+=</span> <span class="token number">2</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//只判断奇数</span>
-        <span class="token punctuation">}</span>
-        <span class="token keyword">return</span> list<span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
 
+        <span class="token keyword">int</span> step <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">/**
+         * 另L、R均表示数组的下标位置
+         * 在[L,R]范围内找出最大的数作为下一个跳跃的位置，所以关键是怎么找出下一个跳跃的位置
+         * 例子a=[2,3,1,1,4]
+         * 开始,第a[0]=2，则【L,R】=【0,2】，在此区间内可以到达的位置为{a[0]+0,a[1]+1,a[2]+2}={2+0,3+1,1+2},最大值为a[1]+1=3+1，所以下一个跳跃的位置就为a[1];
+         * L=1,R=a[1]=3,则【L,R】=【1,4】，在此区间内可到达的位置{a[1]+1,a[2]+2,a[3]+3,a[4]+4}={3+1,1+2,1+3,4+4}={4,3,4,8},最大值为a[4]+4=8,所以下一次跳跃的位置为a[4]，即跳到最后一个位置至少要2步。
+         */</span>
+        <span class="token keyword">int</span> L <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> R <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">while</span><span class="token punctuation">(</span>R <span class="token operator">&lt;</span> a<span class="token punctuation">.</span>length<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 区间中可以跳跃的最大位置</span>
+            <span class="token keyword">int</span> maxIndex <span class="token operator">=</span> a<span class="token punctuation">[</span>L<span class="token punctuation">]</span><span class="token punctuation">;</span> 
+            <span class="token comment" spellcheck="true">// 取区间内a[i]+i最大值</span>
+            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span> L<span class="token punctuation">;</span> i<span class="token operator">&lt;=</span>R<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                maxIndex <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> i<span class="token punctuation">,</span> maxIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            L <span class="token operator">=</span> R <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+            R <span class="token operator">=</span> maxIndex<span class="token punctuation">;</span>
+            step<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> step<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>    
 </code></pre>
 
             </div>
@@ -486,7 +483,7 @@
                     </span>
                     <a href="https://lanchunqiu.github.io" class="b-link-green">lanchunqiu.github.io</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/03/06/GetPrimes/" class="b-link-green">输出正整数N以内的所有质数（素数）</a>
+                    <a href="/2019/03/16/JumpGame2/" class="b-link-green">跳跃游戏II</a>
                 </p>
             </div>
         </div>
@@ -509,7 +506,8 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2019/03/16/JumpGame2/">
                     <div class="card-image">
@@ -527,9 +525,9 @@
 输出: 2
 解释: 跳到最后一个</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-16
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-16
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -542,6 +540,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -568,24 +567,22 @@
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/03/02/JumpGame/">
+                <a href="/2019/03/06/GetPrimes/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="跳跃游戏">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="输出正整数N以内的所有质数（素数）">
                         
-                        <span class="card-title">跳跃游戏</span>
+                        <span class="card-title">输出正整数N以内的所有质数（素数）</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">给定一个非负整数数组，你最初位于数组的第一个位置。数组中的每个元素代表你在该位置可以跳跃的最大长度。判断你是否能够到达最后一个位置。LeetCode
-示例1
-输入: [2,3,1,1,4]
-输出: true
-解释: 从位置 0 到 1 跳 </div>
+                    <div class="summary">输出N以内的所有质数（素数）例如：输入20，输出[2,3,5,7,11,13,17,19]
+方法1：贪心算法看到这到题时，立刻就能想到用嵌套循环，对于任意的n对【2，n-1】之间每个数取余，如果余数0，说明能除尽，则不是素数（质数）。
+  </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-02
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-03-06
                             </span>
                         <span class="publish-author">
                             
@@ -608,10 +605,6 @@
                     
                     <a href="/tags/算法/" target="_blank">
                         <span class="chip bg-color">算法</span>
-                    </a>
-                    
-                    <a href="/tags/LeetCode/" target="_blank">
-                        <span class="chip bg-color">LeetCode</span>
                     </a>
                     
                 </div>

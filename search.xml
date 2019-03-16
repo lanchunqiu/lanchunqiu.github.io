@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>跳跃游戏II</title>
+      <link href="/2019/03/16/JumpGame2/"/>
+      <url>/2019/03/16/JumpGame2/</url>
+      
+        <content type="html"><![CDATA[<p>给定一个非负整数数组，你最初位于数组的第一个位置。数组中的每个元素代表你在该位置可以跳跃的最大长度。你的目标是使用最少的跳跃次数到达数组的最后一个位置。<a href="https://leetcode-cn.com/problems/jump-game-ii/" target="_blank" rel="noopener">LeetCode</a></p><p>示例</p><pre><code>输入: [2,3,1,1,4]输出: 2解释: 跳到最后一个位置的最小跳跃数是 2。     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。</code></pre><p><strong>说明:</strong></p><p>假设你总是可以到达数组的最后一个位置。</p><p><strong>贪心算法：</strong></p><p>这里贪心的意思，不是说当前位置最大可以跳多少步就跳多少步，而是在当前位置可以跳的步数的范围内，选择下一跳可以跳的最远的那个步数，来决定当前跳多少步。</p><p>解题思路：</p><ul><li>另L、R均表示数组的下标位置；<ul><li>在[L,R]范围内找出最大的数作为下一个跳跃的位置，所以关键是怎么找出下一个跳跃的位置；</li><li>例子a=[2,3,1,1,4]</li><li>开始,第a[0]=2，则【L,R】=【0,2】，在此区间内可以到达的位置为{a[0]+0, a[1]+1, a[2]+2} = {2+0, 3+1, 1+2}，最大值为a[1]+1=3+1，所以下一个跳跃的位置就为a[1];</li><li>L=1,R=a[1]=3，则【L,R】=【1,4】，在此区间内可到达的位置{a[1]+1, a[2]+2, a[3]+3, a[4]+4}={3+1,1+2,1+3,4+4}={4,3,4,8},最大值为a[4]+4=8,所以下一次跳跃的位置为a[4]，即跳到最后一个位置至少要2步。</li></ul></li></ul><pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">{</span>    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">jump</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> a<span class="token punctuation">)</span><span class="token punctuation">{</span>        <span class="token comment" spellcheck="true">//不用跳的情况</span>        <span class="token keyword">if</span><span class="token punctuation">(</span> a <span class="token operator">==</span> null <span class="token operator">||</span> a<span class="token punctuation">.</span>length <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">{</span>            <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token punctuation">}</span>        <span class="token keyword">int</span> step <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token comment" spellcheck="true">/**         * 另L、R均表示数组的下标位置         * 在[L,R]范围内找出最大的数作为下一个跳跃的位置，所以关键是怎么找出下一个跳跃的位置         * 例子a=[2,3,1,1,4]         * 开始,第a[0]=2，则【L,R】=【0,2】，在此区间内可以到达的位置为{a[0]+0,a[1]+1,a[2]+2}={2+0,3+1,1+2},最大值为a[1]+1=3+1，所以下一个跳跃的位置就为a[1];         * L=1,R=a[1]=3,则【L,R】=【1,4】，在此区间内可到达的位置{a[1]+1,a[2]+2,a[3]+3,a[4]+4}={3+1,1+2,1+3,4+4}={4,3,4,8},最大值为a[4]+4=8,所以下一次跳跃的位置为a[4]，即跳到最后一个位置至少要2步。         */</span>        <span class="token keyword">int</span> L <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> R <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token keyword">while</span><span class="token punctuation">(</span>R <span class="token operator">&lt;</span> a<span class="token punctuation">.</span>length<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>            <span class="token comment" spellcheck="true">// 区间中可以跳跃的最大位置</span>            <span class="token keyword">int</span> maxIndex <span class="token operator">=</span> a<span class="token punctuation">[</span>L<span class="token punctuation">]</span><span class="token punctuation">;</span>             <span class="token comment" spellcheck="true">// 取区间内a[i]+i最大值</span>            <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span> L<span class="token punctuation">;</span> i<span class="token operator">&lt;=</span>R<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>                maxIndex <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> i<span class="token punctuation">,</span> maxIndex<span class="token punctuation">)</span><span class="token punctuation">;</span>            <span class="token punctuation">}</span>            L <span class="token operator">=</span> R <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>            R <span class="token operator">=</span> maxIndex<span class="token punctuation">;</span>            step<span class="token operator">++</span><span class="token punctuation">;</span>        <span class="token punctuation">}</span>        <span class="token keyword">return</span> step<span class="token punctuation">;</span>    <span class="token punctuation">}</span><span class="token punctuation">}</span>    </code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>输出正整数N以内的所有质数（素数）</title>
       <link href="/2019/03/06/GetPrimes/"/>
       <url>/2019/03/06/GetPrimes/</url>
