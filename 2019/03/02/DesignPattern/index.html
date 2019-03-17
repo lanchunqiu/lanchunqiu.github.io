@@ -3206,12 +3206,12 @@ a <span class="token operator">/</span> b <span class="token operator">=</span> 
 <p><img src="/2019/03/02/DesignPattern/ObserverPattern.png" alt></p>
 <p>示例</p>
 <p>抽象观察者类</p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <p>具体观察者</p>
-<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteObserver</span> <span class="token keyword">extends</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteObserver</span> <span class="token keyword">implements</span> <span class="token class-name">Observer</span> <span class="token punctuation">{</span>
     <span class="token keyword">private</span> String observerName<span class="token punctuation">;</span>
     <span class="token keyword">private</span> String state<span class="token punctuation">;</span>
     <span class="token keyword">private</span> ConcreteSubject concreteSubject<span class="token punctuation">;</span>
@@ -3256,9 +3256,11 @@ a <span class="token operator">/</span> b <span class="token operator">=</span> 
     <span class="token keyword">private</span> String subjectName<span class="token punctuation">;</span>
     <span class="token keyword">private</span> String state<span class="token punctuation">;</span>
 
+
     <span class="token keyword">public</span> <span class="token function">ConcreteSubject</span><span class="token punctuation">(</span>String subjectName<span class="token punctuation">)</span><span class="token punctuation">{</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>subjectName <span class="token operator">=</span> subjectName<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
+
     <span class="token keyword">public</span> String <span class="token function">getSubjectName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> subjectName<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
@@ -3276,14 +3278,7 @@ a <span class="token operator">/</span> b <span class="token operator">=</span> 
         <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">notifyObserver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Observer observer<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        observers<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Observer observer<span class="token punctuation">)</span><span class="token punctuation">{</span>
-        observers<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>observer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
+
     <span class="token annotation punctuation">@Override</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">notifyObserver</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
         <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> observers<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
@@ -3291,7 +3286,6 @@ a <span class="token operator">/</span> b <span class="token operator">=</span> 
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-
 </code></pre>
 <p>客户端</p>
 <pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
