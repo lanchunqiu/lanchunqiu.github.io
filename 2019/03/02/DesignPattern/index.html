@@ -3334,6 +3334,350 @@ a <span class="token operator">/</span> b <span class="token operator">=</span> 
 <li>当对一个对象的改变需要同时改变其他的对象但是却不知道具体有多少个对象等待改变时；</li>
 <li>当一个对象必须通知其他对象但却不能与其他对象造成紧密耦合时；</li>
 </ul>
+<h4 id="5-备忘录模式"><a href="#5-备忘录模式" class="headerlink" title="5.备忘录模式"></a>5.备忘录模式</h4><p>备忘录模式是一种行为模式，在开发过程中，当我们需要执行一个取消操作从而使系统回滚到从前的一个状态，或者我们希望让一个处于暂停状态的工作继续运行时，就需要创建一个曾经在系统中出现过的对象。备忘录模式可以为一个对象听状态存储即状态恢复的方法。</p>
+<p>其实很多应用软件都提供了这项功能，如 Word、记事本、Photoshop、Eclipse 等软件在编辑时按 Ctrl+Z 组合键时能撤销当前操作，使文档恢复到之前的状态；还有在 IE 中的后退键、数据库事务管理中的回滚操作、玩游戏时的中间结果存档功能、数据库与操作系统的备份操作、棋类游戏中的悔棋功能等都属于这类。</p>
+<p><strong>备忘录（Memento）模式</strong>定义：在不破坏封装性的前提下，捕捉一个对象的内部状态，并在该对象之外保持这个状态。这样以后就可以将该对象恢复到原先保存的状态。</p>
+<p>备忘录模式的主要角色如下：</p>
+<ol>
+<li><strong>发起人（Originator）角色</strong>：记录当前时刻的内部状态信息，提供创建备忘录和恢复备忘录数据的功能，实现其他业务功能，它可以访问备忘录里的所有信息。</li>
+<li><strong>备忘录（Memento）角色</strong>：负责存储发起人的内部状态，在需要的时候提供这些内部状态给发起人。</li>
+<li><strong>管理者（Caretaker）角色</strong>：对备忘录进行管理，提供保存与获取备忘录的功能，但其不能对备忘录的内容进行访问与修改。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/MementoPattern.png" alt></p>
+<p>示例</p>
+<p>备忘录角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 备忘录
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Memento</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> String state<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Memento</span><span class="token punctuation">(</span>String state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setState</span><span class="token punctuation">(</span>String state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>发起人角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 发起人
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Originator</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String state<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setState</span><span class="token punctuation">(</span>String state<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> state<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> Memento <span class="token function">createMemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Memento</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">restoreMemento</span><span class="token punctuation">(</span>Memento m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>管理者</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 管理者
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Caretaker</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> Memento memento<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMemento</span><span class="token punctuation">(</span>Memento m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        memento <span class="token operator">=</span> m<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> Memento <span class="token function">getMemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> memento<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Originator originator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Originator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Caretaker caretaker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Caretaker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        originator<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token string">"State1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"初始状态:"</span> <span class="token operator">+</span> originator<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        caretaker<span class="token punctuation">.</span><span class="token function">setMemento</span><span class="token punctuation">(</span>originator<span class="token punctuation">.</span><span class="token function">createMemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//保存状态</span>
+        originator<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token string">"State2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"新的状态:"</span> <span class="token operator">+</span> originator<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        originator<span class="token punctuation">.</span><span class="token function">restoreMemento</span><span class="token punctuation">(</span>caretaker<span class="token punctuation">.</span><span class="token function">getMemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//恢复状态</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"恢复状态:"</span> <span class="token operator">+</span> originator<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+初始状态<span class="token operator">:</span>State1
+新的状态<span class="token operator">:</span>State2
+恢复状态<span class="token operator">:</span>State1
+</code></pre>
+<p>示例2（游戏进度归档）</p>
+<p>备忘录角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 游戏状态（备忘录角色）
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GameState</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">GameState</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">,</span> <span class="token keyword">int</span> coordinate<span class="token punctuation">,</span> <span class="token keyword">int</span> chapter<span class="token punctuation">,</span> <span class="token keyword">int</span> HP<span class="token punctuation">,</span> <span class="token keyword">int</span> MP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> level<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>coordinate <span class="token operator">=</span> coordinate<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>chapter <span class="token operator">=</span> chapter<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>HP <span class="token operator">=</span> HP<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>MP <span class="token operator">=</span> MP<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 角色等级
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> level<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 角色的地图坐标
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> coordinate<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 章节进度
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> chapter<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 生命值
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> HP<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 魔力值
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> MP<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> level<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setLevel</span><span class="token punctuation">(</span><span class="token keyword">int</span> level<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> level<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getCoordinate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> coordinate<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCoordinate</span><span class="token punctuation">(</span><span class="token keyword">int</span> coordinate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>coordinate <span class="token operator">=</span> coordinate<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getChapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> chapter<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setChapter</span><span class="token punctuation">(</span><span class="token keyword">int</span> chapter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>chapter <span class="token operator">=</span> chapter<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getHP</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> HP<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setHP</span><span class="token punctuation">(</span><span class="token keyword">int</span> HP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>HP <span class="token operator">=</span> HP<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getMP</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> MP<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMP</span><span class="token punctuation">(</span><span class="token keyword">int</span> MP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>MP <span class="token operator">=</span> MP<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>发起人角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 游戏角色（发起人角色）
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GameRole</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 角色等级
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> level<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 角色的地图坐标
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> coordinate<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 章节进度
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> chapter<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 生命值
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> HP<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 魔力值
+     */</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> MP<span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 保存游戏状态
+     * @return
+     */</span>
+    <span class="token keyword">public</span> GameState <span class="token function">saveState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">GameState</span><span class="token punctuation">(</span>level<span class="token punctuation">,</span> coordinate<span class="token punctuation">,</span> chapter<span class="token punctuation">,</span> HP<span class="token punctuation">,</span> MP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 恢复存档
+     * @param gameState
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">recover</span><span class="token punctuation">(</span>GameState gameState<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> gameState<span class="token punctuation">.</span><span class="token function">getLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>coordinate <span class="token operator">=</span> gameState<span class="token punctuation">.</span><span class="token function">getCoordinate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>chapter <span class="token operator">=</span> gameState<span class="token punctuation">.</span><span class="token function">getChapter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>HP <span class="token operator">=</span> gameState<span class="token punctuation">.</span><span class="token function">getHP</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>MP <span class="token operator">=</span> gameState<span class="token punctuation">.</span><span class="token function">getMP</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 显示游戏状态
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">showState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"游戏进度信息如下："</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"角色级别："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>level<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"角色坐标："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>coordinate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"角色生命值："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>HP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"角色魔力值："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>MP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"游戏章节："</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>chapter <span class="token operator">+</span> <span class="token string">"章节"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 初始化
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">initial</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>coordinate <span class="token operator">=</span> <span class="token number">1234</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>chapter <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>HP <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>MP <span class="token operator">=</span> <span class="token number">999</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 做任务失败
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doTaskFail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>level <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>coordinate <span class="token operator">=</span> <span class="token number">1234</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>chapter <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>HP <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>MP <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>备忘录管理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 存档管理者
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GameStateCaretaker</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> GameState gameState<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setGameState</span><span class="token punctuation">(</span>GameState gameState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>gameState <span class="token operator">=</span> gameState<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> GameState <span class="token function">getGameState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> gameState<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">//游戏初始状态</span>
+        GameRole  first <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GameRole</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        first<span class="token punctuation">.</span><span class="token function">initial</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"做任务之前，"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        first<span class="token punctuation">.</span><span class="token function">showState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"===================="</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//进度保存</span>
+        GameStateCaretaker gameStateCaretaker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GameStateCaretaker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        gameStateCaretaker<span class="token punctuation">.</span><span class="token function">setGameState</span><span class="token punctuation">(</span>first<span class="token punctuation">.</span><span class="token function">saveState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//做任务失败</span>
+        first<span class="token punctuation">.</span><span class="token function">doTaskFail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"做任务失败后，"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        first<span class="token punctuation">.</span><span class="token function">showState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"===================="</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//恢复存档</span>
+        first<span class="token punctuation">.</span><span class="token function">recover</span><span class="token punctuation">(</span>gameStateCaretaker<span class="token punctuation">.</span><span class="token function">getGameState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"恢复存档后，"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        first<span class="token punctuation">.</span><span class="token function">showState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+做任务之前，游戏进度信息如下：
+角色级别：<span class="token number">100</span>
+角色坐标：<span class="token number">1234</span>
+角色生命值：<span class="token number">1000</span>
+角色魔力值：<span class="token number">999</span>
+游戏章节：<span class="token number">10</span>章节
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+做任务失败后，游戏进度信息如下：
+角色级别：<span class="token number">100</span>
+角色坐标：<span class="token number">1234</span>
+角色生命值：<span class="token number">0</span>
+角色魔力值：<span class="token number">0</span>
+游戏章节：<span class="token number">10</span>章节
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+恢复存档后，游戏进度信息如下：
+角色级别：<span class="token number">100</span>
+角色坐标：<span class="token number">1234</span>
+角色生命值：<span class="token number">1000</span>
+角色魔力值：<span class="token number">999</span>
+游戏章节：<span class="token number">10</span>章节
+</code></pre>
+<p>备忘录角色总结</p>
+<p>备忘录模式是一种对象行为型模式，其主要优点如下：</p>
+<ul>
+<li>提供了一种可以恢复状态的机制。当用户需要时能够比较方便地将数据恢复到某个历史的状态；</li>
+<li>实现了内部状态的封装。除了创建它的发起人之外，其他对象都不能够访问这些状态信息；</li>
+<li>简化了发起人类。发起人不需要管理和保存其内部状态的各个备份，所有状态信息都保存在备忘录中，并由管理者进行管理，这符合单一职责原则；</li>
+</ul>
+<p>其主要缺点是：资源消耗大；如果要保存的内部状态信息过多或者特别频繁，将会占用比较大的内存资源。</p>
+<p>备忘录模式适用于以下几种情况：</p>
+<ul>
+<li>当必须保存一个对象在某一时刻的全部或部分状态以便在需要时可以将其恢复到先前状态时；</li>
+<li>当使用接口让其他对象直接得到自己的状态会暴露对象的实现细节继而破坏其封装性时；</li>
+</ul>
+<p>说人话，在以下场景可以考虑使用备忘录模式：</p>
+<ul>
+<li><p>需要保存与恢复数据的场景，如玩游戏时的中间结果的存档功能。</p>
+</li>
+<li><p>需要提供一个可回滚操作的场景，如 Word、记事本、Photoshop，Eclipse 等软件在编辑时按 Ctrl+Z 组合键，还有数据库中事务操作。</p>
+</li>
+</ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
             </div>
             <hr>
