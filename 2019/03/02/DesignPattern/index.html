@@ -3673,10 +3673,147 @@ a <span class="token operator">/</span> b <span class="token operator">=</span> 
 </ul>
 <p>说人话，在以下场景可以考虑使用备忘录模式：</p>
 <ul>
-<li><p>需要保存与恢复数据的场景，如玩游戏时的中间结果的存档功能。</p>
+<li>需要保存与恢复数据的场景，如玩游戏时的中间结果的存档功能。</li>
+<li>需要提供一个可回滚操作的场景，如 Word、记事本、Photoshop，Eclipse 等软件在编辑时按 Ctrl+Z 组合键，还有数据库中事务操作。</li>
+</ul>
+<h4 id="6-中介者模式"><a href="#6-中介者模式" class="headerlink" title="6.中介者模式"></a>6.中介者模式</h4><p>在现实生活中，常常会出现好多对象之间存在复杂的交互关系，这种交互关系常常是“网状结构”，它要求每个对象都必须知道它需要交互的对象。例如，每个人必须记住他（她）所有朋友的电话；而且，朋友中如果有人的电话修改了，他（她）必须告诉其他所有的朋友修改，这叫作“牵一发而动全身”，非常复杂。</p>
+<p>如果把这种“网状结构”改为“星形结构”的话，将大大降低它们之间的“耦合性”，这时只要找一个“中介者”就可以了。如前面所说的“每个人必须记住所有朋友电话”的问题，只要在网上建立一个每个朋友都可以访问的“通信录”就解决了。这样的例子还有很多，例如，你刚刚参加工作想租房，可以找“房屋中介”；或者，自己刚刚到一个陌生城市找工作，可以找“人才交流中心”帮忙。</p>
+<p>在软件的开发过程中，这样的例子也很多，例如，在 MVC 框架中，控制器（C）就是模型（M）和视图（V）的中介者；还有大家常用的 QQ 聊天程序的“中介者”是 QQ 服务器。所有这些，都可以采用“中介者模式”来实现，它将大大降低对象之间的耦合性，提高系统的灵活性。</p>
+<p><strong>中介者（Mediator）模式</strong>定义：用一个中介对象来封装一系列的对象交互。中介者使各个对象不需要显示的相互引用，从而使器耦合松散，而且可以独立的改变它们之间的交互。中介者模式又叫调停模式，它是迪米特法则的典型应用。</p>
+<p>中介者模式包含以下主要角色：</p>
+<ol>
+<li><strong>抽象中介者（Mediator）角色</strong>：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
+<li><strong>具体中介者（ConcreteMediator）角色</strong>：实现中介者接口，定义一个 List 来管理同事对象，协调各个同事角色之间的交互关系，因此它依赖于同事角色。</li>
+<li><strong>抽象同事类（Colleague）角色</strong>：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
+<li><strong>具体同事类（ConcreteColleague）角色</strong>：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/MediatorPattern.png" alt></p>
+<p>示例</p>
+<p>抽象中介者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Mediator</span> <span class="token punctuation">{</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 注册
+     * @param colleague
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">register</span><span class="token punctuation">(</span>Colleague colleague<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 转发
+     * @param msg
+     * @param c
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">forward</span><span class="token punctuation">(</span>String msg<span class="token punctuation">,</span> Colleague c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体中介者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteMediator</span> <span class="token keyword">extends</span> <span class="token class-name">Mediator</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Colleague<span class="token operator">></span> colleagueList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">register</span><span class="token punctuation">(</span>Colleague colleague<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>colleagueList<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>colleague<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>colleagueList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>colleague<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            colleague<span class="token punctuation">.</span><span class="token function">setMediator</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">forward</span><span class="token punctuation">(</span>String msg<span class="token punctuation">,</span> Colleague c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>Colleague colleague <span class="token operator">:</span> colleagueList<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>colleague<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                colleague<span class="token punctuation">.</span><span class="token function">receive</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>抽象同事类角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Colleague</span> <span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> Mediator mediator<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMediator</span><span class="token punctuation">(</span>Mediator mediator<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>mediator <span class="token operator">=</span> mediator<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 接收信息
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">receive</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 发送信息
+     * @param msg
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">send</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体同事类角色A</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteColleagueA</span> <span class="token keyword">extends</span> <span class="token class-name">Colleague</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">receive</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Colleague A got a message: "</span> <span class="token operator">+</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        mediator<span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>msg<span class="token punctuation">,</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体同事类角色B</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteColleagueB</span> <span class="token keyword">extends</span> <span class="token class-name">Colleague</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">receive</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Colleague B got a message: "</span> <span class="token operator">+</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">send</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        mediator<span class="token punctuation">.</span><span class="token function">forward</span><span class="token punctuation">(</span>msg<span class="token punctuation">,</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ConcreteMediator concreteMediator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteMediator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        ConcreteColleagueA ca <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteColleagueA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ca<span class="token punctuation">.</span><span class="token function">setMediator</span><span class="token punctuation">(</span>concreteMediator<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        ConcreteColleagueB cb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteColleagueB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cb<span class="token punctuation">.</span><span class="token function">setMediator</span><span class="token punctuation">(</span>concreteMediator<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        concreteMediator<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>ca<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        concreteMediator<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>cb<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        ca<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"Hello, I am A!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cb<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"Hello, I am B!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+Colleague B got a message<span class="token operator">:</span> Hello<span class="token punctuation">,</span> I am A<span class="token operator">!</span>
+Colleague A got a message<span class="token operator">:</span> Hello<span class="token punctuation">,</span> I am B<span class="token operator">!</span>
+</code></pre>
+<p>中介者模式总结</p>
+<p>中介者模式是一种对象行为型模式，其主要优点如下：</p>
+<ul>
+<li><p>降低了对象之间的耦合性，使得对象易于独立地被复用；</p>
 </li>
-<li><p>需要提供一个可回滚操作的场景，如 Word、记事本、Photoshop，Eclipse 等软件在编辑时按 Ctrl+Z 组合键，还有数据库中事务操作。</p>
+<li><p>将对象间的一对多关联转变为一对一的关联，提高系统的灵活性，使得系统易于维护和扩展；</p>
 </li>
+</ul>
+<p>其主要缺点是：当同事类太多时，中介者的职责将很大，它会变得复杂而庞大，以至于系统难以维护。</p>
+<p>前面分析了中介者模式的结构与特点，下面分析其以下应用场景：</p>
+<ul>
+<li>当对象之间存在复杂的网状结构关系而导致依赖关系混乱且难以复用时。</li>
+<li>当想创建一个运行于多个类之间的对象，又不想生成新的子类时。</li>
 </ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
             </div>
