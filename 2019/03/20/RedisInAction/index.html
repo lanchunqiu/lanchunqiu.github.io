@@ -574,39 +574,39 @@ Redis（Remote Dictiona">
 <p><img src="/2019/03/20/RedisInAction/sdshdr8.png" alt></p>
 <p>SDS遵循C字符串以空字符结尾的惯例。</p>
 <h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ol>
-<li><p><strong>append</strong>： key value； 如果key已经存在并且是一个字符串，append命令将value追加到原理值得末尾。可用版本&gt;=2.0.0。</p>
+<li><p><strong>append</strong>： append key value； 如果key已经存在并且是一个字符串，append命令将value追加到原理值得末尾。可用版本&gt;=2.0.0。</p>
 </li>
-<li><p><strong>bitcount</strong>：key [start end]； 统计字符串中，被设置为1的比特位的数量。可用版本&gt;=2.6.0。</p>
+<li><p><strong>bitcount</strong>：bitcount key [start end]； 统计字符串中，被设置为1的比特位的数量。可用版本&gt;=2.6.0。</p>
 </li>
-<li><p><strong>bitop</strong>：operation destkey key [key …] ；对一个或多个保存二进制位的字符串key进行位元操作，并将结果保存到destkey上。operation可以是AND、OR、NOT、XOR这四种操作中的任意一种。可用版本&gt;=2.6.0。</p>
+<li><p><strong>bitop</strong>：bitop operation destkey key [key …] ；对一个或多个保存二进制位的字符串key进行位元操作，并将结果保存到destkey上。operation可以是AND、OR、NOT、XOR这四种操作中的任意一种。可用版本&gt;=2.6.0。</p>
 </li>
-<li><p><strong>decr</strong>：key ；将key中存储的数据值减1。可用版本&gt;=1.0.0。</p>
+<li><p><strong>decr</strong>：decr key ；将key中存储的数据值减1。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>decrby</strong>：key decrement；将key所存储的值减去decrement。可用版本&gt;=1.0.0。</p>
+<li><p><strong>decrby</strong>：decrby key decrement；将key所存储的值减去decrement。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>get</strong>：key；返回Key所对应的支付串的值。如果 key不存在那么返回特殊值 nil 。可用版本&gt;=1.0.0。</p>
+<li><p><strong>get</strong>：get key；返回Key所对应的支付串的值。如果 key不存在那么返回特殊值 nil 。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>getbit</strong>：key offset；对key所存储的字符串值，获取指定偏移量上的位(bit)。可用版本&gt;=2.2.0。</p>
+<li><p><strong>getbit</strong>：getbit key offset；对key所存储的字符串值，获取指定偏移量上的位(bit)。可用版本&gt;=2.2.0。</p>
 </li>
-<li><p><strong>getrange</strong>：key start end；截取得出子字符串。可用版本&gt;=2.4.0</p>
+<li><p><strong>getrange</strong>：getrange key start end；截取得出子字符串。可用版本&gt;=2.4.0</p>
 </li>
-<li><p><strong>getset</strong>：key value；将给定key的值设为value，并返回key的旧值。可用版本&gt;=1.0.0。</p>
+<li><p><strong>getset</strong>：getset key value；将给定key的值设为value，并返回key的旧值。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>incr</strong>：key；将key中存储的数字值增一。可用版本&gt;=1.0.0</p>
+<li><p><strong>incr</strong>：incr key；将key中存储的数字值增一。可用版本&gt;=1.0.0</p>
 </li>
-<li><p><strong>incrby</strong>：key increment；将key所存储的值加上增量increment。可用版本&gt;=1.0.0。</p>
+<li><p><strong>incrby</strong>：incrby key increment；将key所存储的值加上增量increment。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>incrbyfloat</strong>：key increment；为key中所存储的值加上浮点数增量increment。可用版本&gt;=2.6.0</p>
+<li><p><strong>incrbyfloat</strong>：incrbyfloat key increment；为key中所存储的值加上浮点数增量increment。可用版本&gt;=2.6.0</p>
 </li>
-<li><p><strong>mget</strong>：key [key …] ；返回所有(一个或多个)给定key的值。可用版本&gt;=1.0.0。</p>
+<li><p><strong>mget</strong>：mget key [key …] ；返回所有(一个或多个)给定key的值。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>mset</strong>：key value [key value …] ；同时设置一个或多个key-value对。可用版本&gt;=1.0.1</p>
+<li><p><strong>mset</strong>：mset key value [key value …] ；同时设置一个或多个key-value对。可用版本&gt;=1.0.1</p>
 </li>
-<li><p><strong>msetnx</strong>：key value [key value …]； 同时设置一个或多个key-value对，当且仅当所有给定的key都不存在。可用版本&gt;=1.0.1。</p>
+<li><p><strong>msetnx</strong>：msetnx key value [key value …]； 同时设置一个或多个key-value对，当且仅当所有给定的key都不存在。可用版本&gt;=1.0.1。</p>
 </li>
-<li><p><strong>psetnx</strong>：key milliseconds value； 这个命令和setex命令相识，但它以毫秒为单位设置key的生存时间，而不是像setex命令那样，以秒为单位。可用版本&gt;=2.6.0。</p>
+<li><p><strong>psetnx</strong>：psetnx key milliseconds value； 这个命令和setex命令相识，但它以毫秒为单位设置key的生存时间，而不是像setex命令那样，以秒为单位。可用版本&gt;=2.6.0。</p>
 </li>
-<li><p><strong>set</strong>：key value [EX seconds] [PX milliseconds] [NX|XX]；将字符串value关联到key。可用版本&gt;=1.0.0。</p>
+<li><p><strong>set</strong>：set key value [EX seconds] [PX milliseconds] [NX|XX]；将字符串value关联到key。可用版本&gt;=1.0.0。</p>
 <p>从版本2.6.12开始，set命令的行为可以通过一系列参数来修改：</p>
 <ul>
 <li><p>EX seconds:设置键的过期时间为second秒，set key value ex second 效果等同于setex key second value；</p>
@@ -617,15 +617,15 @@ Redis（Remote Dictiona">
 <li>XX:只在键已经存在时，才对键进行设置操作。</li>
 </ul>
 </li>
-<li><p><strong>setbit</strong>：key offset value；对key所存储的字符串值，设置或清除指定偏移量上的位(bit)。可用版本&gt;=2.2.0。</p>
+<li><p><strong>setbit</strong>：setbit key offset value；对key所存储的字符串值，设置或清除指定偏移量上的位(bit)。可用版本&gt;=2.2.0。</p>
 </li>
-<li><p><strong>setex</strong>：key seconds value；将值value关联到key，并将key的生存时间设置为seconds秒。可用版本&gt;=2.0.0。</p>
+<li><p><strong>setex</strong>：setex key seconds value；将值value关联到key，并将key的生存时间设置为seconds秒。可用版本&gt;=2.0.0。</p>
 </li>
-<li><p><strong>setnx</strong>：key value；将key的值设为value，当且仅当key不存在。设置成功，返回1；设置失败，返回0。可用版本&gt;=1.0.0。</p>
+<li><p><strong>setnx</strong>：setnx key value；将key的值设为value，当且仅当key不存在。设置成功，返回1；设置失败，返回0。可用版本&gt;=1.0.0。</p>
 </li>
-<li><p><strong>setrange</strong>：key offset value；用value覆盖给定key所存在的字符串值，从偏移量offset开始。可用版本&gt;=2.2.0。</p>
+<li><p><strong>setrange</strong>：setrange key offset value；用value覆盖给定key所存在的字符串值，从偏移量offset开始。可用版本&gt;=2.2.0。</p>
 </li>
-<li><p><strong>strlen</strong>：key；返回key所存储的字符串值得长度。可用版本&gt;=2.2.0。</p>
+<li><p><strong>strlen</strong>：strlen key；返回key所存储的字符串值得长度。可用版本&gt;=2.2.0。</p>
 </li>
 </ol>
 <h3 id="列表-List"><a href="#列表-List" class="headerlink" title="列表(List)"></a>列表(List)</h3><p>列表(list)类型可以存储一个有序的字符串列表，常用的操作是向列表的两端添加元素或者获取列表的某个片段。</p>
@@ -798,20 +798,20 @@ index = hash & dict -> hx[x].sizemask;
 <li>当ht[0]包含的所有键值对都迁移到了ht[1]之后，就把ht[0]置为空表，释放ht[0]，然后将ht[1]设置为ht[0]，并为ht[1]新建一个空的哈希表，为下次rehash做准备。</li>
 </ul>
 <h4 id="常用命令-2"><a href="#常用命令-2" class="headerlink" title="常用命令"></a>常用命令</h4><ol>
-<li><strong>hdel</strong></li>
-<li><strong>hexists</strong></li>
-<li><strong>hget</strong></li>
-<li><strong>hgetall</strong></li>
-<li><strong>hincrby</strong></li>
-<li><strong>hincrbyfloat</strong></li>
-<li><strong>hkeys</strong></li>
-<li><strong>hlen</strong></li>
-<li><strong>hmget</strong></li>
-<li><strong>hmset</strong></li>
-<li><strong>hset</strong></li>
-<li><strong>hsetnx</strong></li>
-<li><strong>hvals</strong></li>
-<li><strong>hscan</strong></li>
+<li><strong>hdel</strong>：hdel key field [field …]；删除哈希表的一个或多个指定域，不存在的域将被忽略。返回被成功删除的域的数量。可用版本&gt;=2.0.0。</li>
+<li><strong>hexists</strong>：hexists key field；查看哈些表key中，给定的field是否存在。如果存在，返回1；如果哈希表不含有给定域，或key不存在，返回0。可用版本&gt;=2.0.0。</li>
+<li><strong>hget</strong>：hget key field；返回哈希表key中给定域field的值。如果给定的域不存在或是给定key不存在时，返回nil。可用版本&gt;=2.0.0。</li>
+<li><strong>hgetall</strong>：hgetall key；返回哈希表中所有的域和值。若key不存在，返回空列表。可用版本&gt;=2.0.0。</li>
+<li><strong>hincrby</strong>：hincrby key field increment；为哈希表key中的域field的值加上增量increment。增量也可以是负数，相当于对给定域进行减法操作。如果key不存在，一个新的哈希表被创建并执行hincrby命令。如果域field不存在，那么在执行命令前，域的值被初始化为0。对一个存储字符串值得域field执行hincrby命令，会返回错误。可用版本&gt;=2.0.0。</li>
+<li><strong>hincrbyfloat</strong>：hincrbyfloat key field increment；为哈希表key中的field加上浮点数增量Increment。如果哈希表中没有域field，那么hincrbyfloat会先将域field的值设为0，然后再执行加法操作。可用版本&gt;=2.6.0。</li>
+<li><strong>hkeys</strong>：hkeys key；返回哈希表key中的所有域。可用版本&gt;=2.0.0。</li>
+<li><strong>hlen</strong>：hlen key；返回哈希表key中域的数量。当key 不存在时返回0。可用版本&gt;=1.0.0。</li>
+<li><strong>hmget</strong>：hmget key field [field …]；返回哈希表key中，一个或多个给定域的值。如果给定的域不存在于哈希表，那么返回一个nil值。可用版本&gt;=2.0.0。</li>
+<li><strong>hmset</strong>：hmset key field value [field value …]；同时将多个field-value设置到哈希表key中。可用版本&gt;=2.0.0。</li>
+<li><strong>hset</strong>：hset key field value；将哈希表key中的域field的值设为value。如果key不存在，一个新的哈希表被创建并进行hset操作。可用版本&gt;=2.0.0。</li>
+<li><strong>hsetnx</strong>：hsetnx key field value；将哈希表key中的域field的值设置为value，当且仅当域field不存在。设置成功，返回1；如果给定域已经存在斌别没有操作被执行，返回0。可用版本&gt;=2.0.0。</li>
+<li><strong>hvals</strong>：hvals key；返回哈希表key中所有域的值。返回一个包含哈希表中所有值的表；如果key不存在，返回一个空表。可用版本&gt;=2.0.0。</li>
+<li><strong>hscan</strong>：hsan key cursor [match pattern] [count count]；</li>
 </ol>
 
             </div>
