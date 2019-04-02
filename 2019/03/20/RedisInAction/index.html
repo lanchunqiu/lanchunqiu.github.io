@@ -418,7 +418,6 @@ Redis（Remote Dictiona">
 <th>类型</th>
 <th>数据存储</th>
 <th>特性</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
@@ -427,13 +426,11 @@ Redis（Remote Dictiona">
 <td>内存存储非关系键值数据库</td>
 <td>字符串、列表、散列、集合、有序集合</td>
 <td>主从复制、持久化、分片、发布与订阅，Lua脚本</td>
-<td></td>
 </tr>
 <tr>
 <td>Memcached</td>
 <td>内存存储键值缓存</td>
 <td>键值关系映射</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -441,20 +438,6 @@ Redis（Remote Dictiona">
 <td>硬盘存储非关系文档型数据库</td>
 <td>BSON文档（类似json格式）</td>
 <td>支持Map-Reduce操作、主从复制、分片、空间索引</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -813,6 +796,7 @@ index = hash & dict -> hx[x].sizemask;
 <li><strong>hvals</strong>：hvals key；返回哈希表key中所有域的值。返回一个包含哈希表中所有值的表；如果key不存在，返回一个空表。可用版本&gt;=2.0.0。</li>
 <li><strong>hscan</strong>：hsan key cursor [match pattern] [count count]；</li>
 </ol>
+<h3 id="集合-Set"><a href="#集合-Set" class="headerlink" title="集合(Set)"></a>集合(Set)</h3><p>集合类型中，每个元素都是不同的，也就是不能有重复的数据，痛死集合类型中的数据是无序的。一个集合类型可以存储至多2^32 -1个元素。集合类型和列表类型的最大区别是有序性和唯一性。</p>
 
             </div>
             <hr>
