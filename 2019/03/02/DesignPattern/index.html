@@ -4398,6 +4398,246 @@ Starting my car
 </ul>
 </li>
 </ol>
+<h4 id="9-职责链模式"><a href="#9-职责链模式" class="headerlink" title="9.职责链模式"></a>9.职责链模式</h4><p>在现实生活中，有这样的一些例子：一个申请有多个对象可以处理，但是每个对象的处理的条件或权限不同。例如，公司员工请假，可以批假的领导有部门负责人、副总经理、总经理，但每个领导能批准的天数不同，员工必须根据自己要请假的天数去找不同的领导签名，就是说员工必须记住每个领导的姓名、电话和地址等信息，这增加了难度。</p>
+<p>在计算机软件中也有相关的例子，Struts2的拦截器、JSP和Servlet的Filter等，所有这些都是职责链模式的体现。</p>
+<p><strong>职责链（Chain Of Responsibility）模式</strong>定义：为了避免请求发送者与多个请求处理者耦合在一起，将请求的所有处理者连成一条链，并沿着这条链传递该请求，直到有一个对象处理它为止。</p>
+<p>职责链模式主要包含以下角色：</p>
+<ol>
+<li><strong>抽象处理者（Handler）角色</strong>：定义一个处理请求的接口，包含抽象处理方法和一个后继连接。</li>
+<li><strong>具体处理者（ConcreteHandler）角色</strong>：实现抽象处理者的处理方法，判断能否处理本次请求，如果可以处理请求则处理，否则将该请求转给它的后继者。</li>
+<li><strong>客户类（Client）角色</strong>：创建处理链，并向链头的具体处理者对象提交请求，它不关心处理细节和请求的传递过程。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/ChainOfResponsibilityPattern.png" alt></p>
+<p>示例1</p>
+<p>抽象处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ *  处理请求接口
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Handler</span> <span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> Handler next<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> Handler <span class="token function">getNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setNext</span><span class="token punctuation">(</span>Handler next<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>next <span class="token operator">=</span> next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 抽象处理请求方法
+     * @param request
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">handleRequest</span><span class="token punctuation">(</span>String request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 具体处理者1
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteHandler1</span> <span class="token keyword">extends</span> <span class="token class-name">Handler</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">handleRequest</span><span class="token punctuation">(</span>String request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"first"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"具体处理者1负责处理该请求！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">getNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCanonicalName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"自身无法满足请求，转给下一个处理者！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">getNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">handleRequest</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"没有人处理该请求！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+</code></pre>
+<p>具体处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ *
+ * 具体处理者1
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteHandler2</span> <span class="token keyword">extends</span> <span class="token class-name">Handler</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">handleRequest</span><span class="token punctuation">(</span>String request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"second"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"具体处理者2负责处理该请求！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">getNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getCanonicalName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"自身无法满足请求，转给下一个处理者！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">getNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">handleRequest</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"没有人处理该请求！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 客户端
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Handler handler1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteHandler1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Handler handler2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteHandler2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        handler1<span class="token punctuation">.</span><span class="token function">setNext</span><span class="token punctuation">(</span>handler2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">//提交请求</span>
+        handler1<span class="token punctuation">.</span><span class="token function">handleRequest</span><span class="token punctuation">(</span><span class="token string">"second"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+com<span class="token punctuation">.</span>lancq<span class="token punctuation">.</span>behaviorpattern<span class="token punctuation">.</span>chainofresponsibility<span class="token punctuation">.</span>ConcreteHandler1自身无法满足请求，转给下一个处理者！
+具体处理者<span class="token number">2</span>负责处理该请求！
+</code></pre>
+<p>示例2：日志打印</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">enum</span> LogLevel <span class="token punctuation">{</span>
+    INFO<span class="token punctuation">,</span> DEBUG<span class="token punctuation">,</span> WARNING<span class="token punctuation">,</span> ERROR<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>抽象处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**抽象处理者角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">Logger</span> <span class="token punctuation">{</span>
+    <span class="token keyword">protected</span> LogLevel logMask<span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> Logger next<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Logger</span><span class="token punctuation">(</span>LogLevel mask<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>logMask <span class="token operator">=</span> mask<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> Logger <span class="token function">setNext</span><span class="token punctuation">(</span>Logger nextLogger<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>next <span class="token operator">=</span> nextLogger<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> nextLogger<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">message</span><span class="token punctuation">(</span>String msg<span class="token punctuation">,</span> LogLevel severity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>logMask <span class="token operator">==</span> severity<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">writeMessage</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>next <span class="token operator">!=</span> null<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            next<span class="token punctuation">.</span><span class="token function">message</span><span class="token punctuation">(</span>msg<span class="token punctuation">,</span> severity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">abstract</span> <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">writeMessage</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 具体处理请求角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConsoleLogger</span> <span class="token keyword">extends</span> <span class="token class-name">Logger</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token function">ConsoleLogger</span><span class="token punctuation">(</span>LogLevel mask<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>mask<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">writeMessage</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Writing to console: "</span> <span class="token operator">+</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 具体处理请求角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmailLogger</span> <span class="token keyword">extends</span> <span class="token class-name">Logger</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token function">EmailLogger</span><span class="token punctuation">(</span>LogLevel mask<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>mask<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">writeMessage</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Sending via email: "</span> <span class="token operator">+</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体处理者角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 具体处理请求角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">FileLogger</span> <span class="token keyword">extends</span> <span class="token class-name">Logger</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token function">FileLogger</span><span class="token punctuation">(</span>LogLevel mask<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>mask<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">writeMessage</span><span class="token punctuation">(</span>String msg<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>err<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Writing to Log File: "</span> <span class="token operator">+</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 客户端
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Program</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Logger logger<span class="token punctuation">,</span> logger1<span class="token punctuation">,</span> logger2<span class="token punctuation">;</span>
+        logger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConsoleLogger</span><span class="token punctuation">(</span>LogLevel<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger1 <span class="token operator">=</span> logger<span class="token punctuation">.</span><span class="token function">setNext</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">EmailLogger</span><span class="token punctuation">(</span>LogLevel<span class="token punctuation">.</span>WARNING<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger2 <span class="token operator">=</span> logger1<span class="token punctuation">.</span><span class="token function">setNext</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FileLogger</span><span class="token punctuation">(</span>LogLevel<span class="token punctuation">.</span>ERROR<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        logger<span class="token punctuation">.</span><span class="token function">message</span><span class="token punctuation">(</span><span class="token string">"Entering function ProcessOrder()."</span><span class="token punctuation">,</span> LogLevel<span class="token punctuation">.</span>DEBUG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger<span class="token punctuation">.</span><span class="token function">message</span><span class="token punctuation">(</span><span class="token string">"Customer Address details missing in Branch DataBase."</span><span class="token punctuation">,</span> LogLevel<span class="token punctuation">.</span>WARNING<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger<span class="token punctuation">.</span><span class="token function">message</span><span class="token punctuation">(</span><span class="token string">"Customer Address details missing in Organization DataBase."</span><span class="token punctuation">,</span> LogLevel<span class="token punctuation">.</span>ERROR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+Writing to console<span class="token operator">:</span> Entering function <span class="token function">ProcessOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+Sending via email<span class="token operator">:</span> Customer Address details missing in Branch DataBase<span class="token punctuation">.</span>
+Writing to Log File<span class="token operator">:</span> Customer Address details missing in Organization DataBase<span class="token punctuation">.</span>
+</code></pre>
+<p>职责链模式总结</p>
+<p>责任链模式是一种对象行为型模式，其主要优点如下：</p>
+<ul>
+<li>降低了对象之间的耦合度。该模式使得一个对象无须知道到底是哪一个对象处理其请求以及链的结构，发送者和接收者也无须拥有对方的明确信息。</li>
+<li>增强了系统的可扩展性。可以根据需要增加新的请求处理类，满足开闭原则。</li>
+<li>增强了给对象指派职责的灵活性。当工作流程发生变化，可以动态地改变链内的成员或者调动它们的次序，也可动态地新增或者删除责任。</li>
+<li>责任链简化了对象之间的连接。每个对象只需保持一个指向其后继者的引用，不需保持其他所有处理者的引用，这避免了使用众多的 if 或者 if···else 语句。</li>
+<li>责任分担。每个类只需要处理自己该处理的工作，不该处理的传递给下一个对象完成，明确各类的责任范围，符合类的单一职责原则。</li>
+</ul>
+<p>其主要缺点如下：</p>
+<ul>
+<li>不能保证每个请求一定被处理。由于一个请求没有明确的接收者，所以不能保证它一定会被处理，该请求可能一直传到链的末端都得不到处理。</li>
+<li>对比较长的职责链，请求的处理可能涉及多个处理对象，系统性能将受到一定影响。</li>
+<li>职责链建立的合理性要靠客户端来保证，增加了客户端的复杂性，可能会由于职责链的错误设置而导致系统出错，如可能会造成循环调用。</li>
+</ul>
+<p>责任链模式通常在以下几种情况使用：</p>
+<ul>
+<li><p>有多个对象可以处理一个请求，哪个对象处理该请求由运行时刻自动确定。</p>
+</li>
+<li><p>可动态指定一组对象处理请求，或添加新的处理者。</p>
+</li>
+<li><p>在不明确指定请求处理者的情况下，向多个处理者中的一个提交请求。</p>
+</li>
+</ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
             </div>
             <hr>
