@@ -4638,6 +4638,364 @@ Writing to Log File<span class="token operator">:</span> Customer Address detail
 <li><p>在不明确指定请求处理者的情况下，向多个处理者中的一个提交请求。</p>
 </li>
 </ul>
+<h4 id="10-迭代器模式"><a href="#10-迭代器模式" class="headerlink" title="10.迭代器模式"></a>10.迭代器模式</h4><p>迭代器模式曾经是一种最常见、最简单的设计模式，它提供一种顺序访问某个集合中所有元素的解决方案，而不用了解集合底层的操作。虽然现在信息的语言当中都将迭代器集成了进去，但是讨论迭代器模式的实现对于我们理解面向对象开发而言任然有器学习价值存在。</p>
+<p>将遍历聚合对象中数据的行为提取出来，并把其封装到一个迭代器中，通过转入的迭代器去遍历聚合对象的内部数据，这是迭代器模式的本质。迭代器模式是”单一职责”的完美体现。在Java中，List、Set、Map都包含了迭代器。</p>
+<p><strong>迭代器（Iterator）模式</strong>定义：提供一种方法顺序访问一个聚合对象中的各个元素，而又不保留该对象的内部表示。</p>
+<p>迭代器模式主要包含以下角色：</p>
+<ol>
+<li><strong>抽象聚合（Aggregate）角色</strong>：定义存储、添加、删除聚合对象以及创建迭代器对象的接口。</li>
+<li><strong>具体聚合（ConcreteAggregate）角色</strong>：实现抽象聚合类，返回一个具体迭代器的实例。</li>
+<li><strong>抽象迭代器（Iterator）角色</strong>：定义访问和遍历聚合元素的接口，通常包含 hasNext()、first()、next() 等方法。</li>
+<li><strong>具体迭代器（Concretelterator）角色</strong>：实现抽象迭代器接口中所定义的方法，完成对聚合对象的遍历，记录遍历的当前位置。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/IteratorPattern.png" alt></p>
+<p>示例</p>
+<p>抽象聚合角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 抽象聚合角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Aggregate</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Iterator <span class="token function">createIterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体聚合角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 具体聚合角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteAggregate</span> <span class="token keyword">implements</span> <span class="token class-name">Aggregate</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> List<span class="token operator">&lt;</span>Object<span class="token operator">></span> items <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        items<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">remove</span><span class="token punctuation">(</span>Object obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        items<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Iterator <span class="token function">createIterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteIterator</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> List<span class="token operator">&lt;</span>Object<span class="token operator">></span> <span class="token function">getItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> items<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>抽象迭代器角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 抽象迭代器角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Iterator</span> <span class="token punctuation">{</span>
+    Object <span class="token function">first</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Object <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">boolean</span> <span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>具体迭代器角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 具体迭代器角色
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConcreteIterator</span> <span class="token keyword">implements</span> <span class="token class-name">Iterator</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> ConcreteAggregate aggregate<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">ConcreteIterator</span><span class="token punctuation">(</span>ConcreteAggregate concreteAggregate<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>aggregate <span class="token operator">=</span> concreteAggregate<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Object <span class="token function">first</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> aggregate<span class="token punctuation">.</span><span class="token function">getItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> Object <span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Object obj <span class="token operator">=</span> null<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>aggregate<span class="token punctuation">.</span><span class="token function">getItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            obj <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>aggregate<span class="token punctuation">.</span><span class="token function">getItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>index<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> obj<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> index <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>aggregate<span class="token punctuation">.</span><span class="token function">getItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 客户端
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ConcreteAggregate aggregate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConcreteAggregate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            aggregate<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">"【"</span> <span class="token operator">+</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"】号求职者"</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        Iterator iterator <span class="token operator">=</span> aggregate<span class="token punctuation">.</span><span class="token function">createIterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">hasNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"请"</span> <span class="token operator">+</span> iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"到第"</span> <span class="token operator">+</span> <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"会议室参加面试！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+请【<span class="token number">1</span>】号求职者到第<span class="token number">3</span>会议室参加面试！
+请【<span class="token number">2</span>】号求职者到第<span class="token number">5</span>会议室参加面试！
+请【<span class="token number">3</span>】号求职者到第<span class="token number">4</span>会议室参加面试！
+请【<span class="token number">4</span>】号求职者到第<span class="token number">3</span>会议室参加面试！
+请【<span class="token number">5</span>】号求职者到第<span class="token number">4</span>会议室参加面试！
+请【<span class="token number">6</span>】号求职者到第<span class="token number">3</span>会议室参加面试！
+请【<span class="token number">7</span>】号求职者到第<span class="token number">5</span>会议室参加面试！
+请【<span class="token number">8</span>】号求职者到第<span class="token number">4</span>会议室参加面试！
+请【<span class="token number">9</span>】号求职者到第<span class="token number">5</span>会议室参加面试！
+请【<span class="token number">10</span>】号求职者到第<span class="token number">2</span>会议室参加面试！
+</code></pre>
+<p>迭代器模式总结</p>
+<p>主要优点：</p>
+<ul>
+<li><p>访问一个聚合对象的内容而无须暴露它的内部表示；</p>
+</li>
+<li><p>遍历任务交由迭代器完成，这简化了聚合类；</p>
+</li>
+<li><p>它支持以不同方式遍历一个聚合，甚至可以自定义迭代器的子类以支持新的遍历；</p>
+</li>
+<li><p>增加新的聚合类和迭代器类都很方便，无须修改原有代码；</p>
+</li>
+<li><p>封装性良好，为遍历不同的聚合结构提供一个统一的接口；</p>
+</li>
+</ul>
+<p>其主要缺点是：增加了类的个数，这在一定程度上增加了系统的复杂性。</p>
+<p>迭代器适用于以下几种情况：</p>
+<ul>
+<li>当需要访问一个聚合对象的内容而又不想暴露它的内部表示时；</li>
+<li>当希望支持对聚合对象的多种遍历方式时；</li>
+<li>当需要为遍历不同的聚合解雇提供统一的对外接口时；</li>
+</ul>
+<h4 id="11-解释器模式"><a href="#11-解释器模式" class="headerlink" title="11.解释器模式"></a>11.解释器模式</h4><p>在软件开发中，当一种特定类型的问题发生至足够高的频率后，那么就值得将此问题的各个实例表述为一个简单语言中的句子，以此来构建一个解释器，这个解释器通过解释这些语句来处理问题。</p>
+<p><strong>解释器（Interpreter）模式</strong>定义：给定一个语言，定义它的文法的一种表示，并定义一个解释器，这个解释器使用该表示来解释语言中的句子。</p>
+<p>解释器模式包含以下主要角色：</p>
+<ol>
+<li><strong>抽象表达式（AbstractExpression）角色</strong>：定义解释器的接口，约定解释器的解释操作，主要包含解释方法 interpret()。</li>
+<li><strong>终结符表达式（TerminalExpression）角色</strong>：是抽象表达式的子类，用来实现文法中与终结符相关的操作，文法中的每一个终结符都有一个具体终结表达式与之相对应。</li>
+<li><strong>非终结符表达式（NonterminalExpression）角色</strong>：也是抽象表达式的子类，用来实现文法中与非终结符相关的操作，文法中的每条规则都对应于一个非终结符表达式。</li>
+<li><strong>环境（Context）角色</strong>：通常包含各个解释器需要的数据或是公共的功能，一般用来传递被所有解释器共享的数据，后面的解释器可以从这里获取这些值。</li>
+<li><strong>客户端（Client）</strong>：主要任务是将需要分析的句子或表达式转换成使用解释器对象描述的抽象语法树，然后调用解释器的解释方法，当然也可以通过环境角色间接访问解释器的解释方法。</li>
+</ol>
+<p>结构图</p>
+<p><img src="/2019/03/02/DesignPattern/InterpreterPattern.png" alt></p>
+<p>示例</p>
+<p>抽象表达式角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 抽象表达式
+ * 
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractExpression</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">void</span> <span class="token function">interpret</span><span class="token punctuation">(</span>Context info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>终端表达式角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 终端表达式
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TerminalExpression</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractExpression</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">interpret</span><span class="token punctuation">(</span>Context info<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>info<span class="token punctuation">.</span><span class="token function">getInputString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"终端解释器"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>非终端表达式角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 非终端表达式
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NonterminalExpression</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractExpression</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">interpret</span><span class="token punctuation">(</span>Context info<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>info<span class="token punctuation">.</span><span class="token function">getInputString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"非终端解释器"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>环境角色</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 环境
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Context</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> String inputString<span class="token punctuation">;</span>
+
+    <span class="token keyword">private</span> String outputString<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getInputString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> inputString<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setInputString</span><span class="token punctuation">(</span>String inputString<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>inputString <span class="token operator">=</span> inputString<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> String <span class="token function">getOutputString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> outputString<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setOutputString</span><span class="token punctuation">(</span>String outputString<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>outputString <span class="token operator">=</span> outputString<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>客户端</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * 客户端
+ *
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Client</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Context context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Context</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        context<span class="token punctuation">.</span><span class="token function">setInputString</span><span class="token punctuation">(</span><span class="token string">"输入的文字"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        List<span class="token operator">&lt;</span>AbstractExpression<span class="token operator">></span> list <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TerminalExpression</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">NonterminalExpression</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        list<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TerminalExpression</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> list<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            list<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">interpret</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+输入的文字
+终端解释器
+输入的文字
+非终端解释器
+输入的文字
+终端解释器
+</code></pre>
+<p>示例2</p>
+<pre class=" language-java"><code class="language-java"><span class="token comment" spellcheck="true">/**
+ * @author lancq
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Interpreter</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@FunctionalInterface</span>
+    <span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">Expr</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> <span class="token function">interpret</span><span class="token punctuation">(</span>Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">></span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">static</span> Expr <span class="token function">number</span><span class="token punctuation">(</span><span class="token keyword">int</span> number<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> context <span class="token operator">-</span><span class="token operator">></span> number<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">static</span> Expr <span class="token function">plus</span><span class="token punctuation">(</span>Expr left<span class="token punctuation">,</span> Expr right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> context <span class="token operator">-</span><span class="token operator">></span> left<span class="token punctuation">.</span><span class="token function">interpret</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token operator">+</span> right<span class="token punctuation">.</span><span class="token function">interpret</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">static</span> Expr <span class="token function">minus</span><span class="token punctuation">(</span>Expr left<span class="token punctuation">,</span> Expr right<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> context <span class="token operator">-</span><span class="token operator">></span> left<span class="token punctuation">.</span><span class="token function">interpret</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token operator">-</span> right<span class="token punctuation">.</span><span class="token function">interpret</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">static</span> Expr <span class="token function">variable</span><span class="token punctuation">(</span>String name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> context <span class="token operator">-</span><span class="token operator">></span> context<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> Expr <span class="token function">parseToken</span><span class="token punctuation">(</span>String token<span class="token punctuation">,</span> ArrayDeque<span class="token operator">&lt;</span>Expr<span class="token operator">></span> stack<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Expr left<span class="token punctuation">,</span> right<span class="token punctuation">;</span>
+        <span class="token keyword">switch</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token string">"+"</span><span class="token operator">:</span>
+                <span class="token comment" spellcheck="true">// it's necessary to remove first the right operand from the stack</span>
+                right <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">// ..and then the left one</span>
+                left <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> Expr<span class="token punctuation">.</span><span class="token function">plus</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">case</span> <span class="token string">"-"</span><span class="token operator">:</span>
+                right <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                left <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> Expr<span class="token punctuation">.</span><span class="token function">minus</span><span class="token punctuation">(</span>left<span class="token punctuation">,</span> right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">default</span><span class="token operator">:</span>
+                <span class="token keyword">return</span> Expr<span class="token punctuation">.</span><span class="token function">variable</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> Expr <span class="token function">parse</span><span class="token punctuation">(</span>String expression<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ArrayDeque<span class="token operator">&lt;</span>Expr<span class="token operator">></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayDeque</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>String token <span class="token operator">:</span> expression<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token function">parseToken</span><span class="token punctuation">(</span>token<span class="token punctuation">,</span> stack<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> stack<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">final</span> String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Expr expr <span class="token operator">=</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">"w x z - +"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Map<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">></span> context <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        context<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"w"</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        context<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"x"</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        context<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"z"</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> result <span class="token operator">=</span> expr<span class="token punctuation">.</span><span class="token function">interpret</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// -27</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+输出结果：
+<span class="token operator">-</span><span class="token number">27</span>
+</code></pre>
+<p>解释器模式总结:</p>
+<p>解释器模式是一种类行为型模式，其主要优点如下:</p>
+<ul>
+<li><p>扩展性好：由于在解释器模式中使用类来表示语言的文法规则，因此可以通过继承等机制来改变或扩展文法；</p>
+</li>
+<li><p>容易实现：在语法树中的每个表达式节点类都是相似的，所以实现其文法较为容易；</p>
+</li>
+</ul>
+<p>解释器模式的主要缺点如下：</p>
+<ul>
+<li><p>执行效率较低：解释器模式中通常使用大量的循环和递归调用，当要解释的句子较复杂时，其运行速度很慢，且代码的调试过程也比较麻烦；</p>
+</li>
+<li><p>会引起类膨胀：解释器模式中的每条规则至少需要定义一个类，当包含的文法规则很多时，类的个数将急剧增加，导致系统难以管理与维护；</p>
+</li>
+<li><p>可应用的场景比较少：在软件开发中，需要定义语言文法的应用实例非常少，所以这种模式很少被使用到。</p>
+</li>
+</ul>
+<p>面介绍了解释器模式的结构与特点，下面分析它的应用场景：</p>
+<ul>
+<li><p>当语言的文法较为简单，且执行效率不是关键问题时；</p>
+</li>
+<li><p>当问题重复出现，且可以用一种简单的语言来进行表达时；</p>
+</li>
+<li><p>当一个语言需要解释执行，并且语言中的句子可以表示为一个抽象语法树的时候，如 XML 文档解释。</p>
+</li>
+</ul>
 <h2 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE!"></a>TO BE CONTINUE!</h2>
             </div>
             <hr>
